@@ -1,9 +1,31 @@
-// LuxCom.swift
-// Constantin Clerc - 05/12/2025
+//
+//  LuxCom.swift
+//  LuxCom
+//
+//  Created by Constantin Clerc on 05.02.2025.
+//
 
-import Foundation
 import OJP
+import Foundation
 
-struct LuxCom {
+public struct LuxComAPI {
+    var apiKey: String
     
+    public init(apiKey: String) {
+        self.apiKey = apiKey
+    }
+    
+    public func setup() -> OJP {
+        let apiConf =  APIConfiguration(
+            apiEndPoint: URL(string: "https://api.opentransportdata.swiss/ojp20")!,
+            requesterReference: "Lux_Tests",
+            additionalHeaders: [
+                "Authorization": "Bearer \(apiKey)"
+            ]
+        )
+        return OJP(
+            loadingStrategy: .http(apiConf),
+            language: Locale.current.languageCode ?? "fr"
+        )
+    }
 }
