@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct someRandomView: View {
-    var body: some View {
+public struct someRandomView: View {
+    public init() {}
+    public var body: some View {
         Text("test")
     }
 }
