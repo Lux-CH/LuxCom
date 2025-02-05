@@ -1,0 +1,33 @@
+{
+  "originHash" : "8363b86d37a389353d2bf81f178a8d055ed4647b6c8f6966cc75f2c607cb6818",
+  "pins" : [
+    {
+      "identity" : "ojp-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/openTdataCH/ojp-ios.git",
+      "state" : {
+        "revision" : "a8dd6403f713f8c5df1c0a4ff4f6fdb9ff4333d7",
+        "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "swift-duration",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/longinius/swift-duration.git",
+      "state" : {
+        "revision" : "f791096071b85c1c8781f6ab52b1b4e45c0de819",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "xmlcoder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CoreOffice/XMLCoder.git",
+      "state" : {
+        "revision" : "b1e944cbd0ef33787b13f639a5418d55b3bed501",
+        "version" : "0.17.1"
+      }
+    }
+  ],
+  "version" : 3
+}
