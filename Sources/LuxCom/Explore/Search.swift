@@ -17,3 +17,7 @@ public func searchForStop(ojpConfig: OJP, stop: String) async throws -> [OJPv2.P
 public func searchForCords(ojpConfig: OJP, coordinates: Point) async throws -> [NearbyObject<OJPv2.PlaceResult>] {
     return try await ojpConfig.requestPlaceResults(from: coordinates)
 }
+
+public func getPlaceResultFromRef(ojpConfig: OJP, place: OJPv2.PlaceRefChoice, params: OJPv2.PlaceParam = OJPv2.PlaceParam(type: [], numberOfResults: 4, includePtModes: false)) async throws -> [OJPv2.PlaceResult] {
+    return try await ojpConfig.requestPlaceResults(placeRef: place, restrictions: params)
+}
