@@ -7,7 +7,7 @@
 //  Updated colors from https://www.tpg.ch/fr/lignes
 //  Old lines from tpg.fandom.com
 
-import SwiftUICore
+import SwiftUI
 
 struct LineColor {
     var line: String
@@ -125,6 +125,14 @@ struct LineColors {
      LineColor(line: "94", color: Color(hex: "000000")),
      LineColor(line: "96", color: Color(hex: "000000")),
      LineColor(line: "97", color: Color(hex: "000000"))]
+    
+    func color(for line: String) -> Color? {
+        return tpgLinesColor.first { $0.line == line }?.color
+    }
+    
+    func textColor(for line: String) -> Color? {
+        return tpgLinesColor.first { $0.line == line }?.textColor
+    }
 }
 
 // https://stackoverflow.com/a/56874327/22819688
