@@ -25,7 +25,7 @@ public struct LuxComAPI {
         )
         return OJP(
             loadingStrategy: .http(apiConf),
-            language: Locale.current.languageCode ?? "fr"
+            language: Locale.current.language.languageCode?.identifier ?? "fr"
         )
     }
 }
