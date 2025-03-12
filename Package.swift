@@ -12,15 +12,9 @@ let package = Package(
             name: "LuxCom",
             targets: ["LuxCom"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/openTdataCH/ojp-ios.git", from: "1.0.0"),
-    ],
     targets: [
         .target(
             name: "LuxCom",
-            dependencies: [
-                .product(name: "OJP", package: "ojp-ios")
-            ],
             path: "Sources"
         ),
         .testTarget(
