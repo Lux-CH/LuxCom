@@ -7,7 +7,7 @@
 
 import Foundation
 
-func getTrip(tripId: String) async throws -> Itinerary {
+public func getTrip(tripId: String) async throws -> Itinerary {
     let queryItems = [URLQueryItem(name: "tripId", value: tripId)]
     return try await APIClient.fetch(from: "/trip", queryItems: queryItems)
 }

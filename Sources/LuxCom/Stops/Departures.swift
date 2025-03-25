@@ -7,7 +7,7 @@
 
 import Foundation
 
-func getDeparturesForStop(
+public func getDeparturesForStop(
     stopId: String,
     time: Date = Date(),
     arriveBy: Bool = false,

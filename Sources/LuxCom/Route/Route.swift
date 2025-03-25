@@ -7,7 +7,7 @@
 
 import Foundation
 
-func getRoute(_ options: RouteOptions) async throws -> Trip {
+public func getRoute(_ options: RouteOptions) async throws -> Trip {
     let dateFormatter = ISO8601DateFormatter()
     dateFormatter.formatOptions = [.withInternetDateTime]
     

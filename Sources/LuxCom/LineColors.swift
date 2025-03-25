@@ -9,13 +9,13 @@
 
 import SwiftUI
 
-struct LineColor: Hashable {
+public struct LineColor: Hashable, Sendable {
     var line: String
     var color: Color
     var textColor: Color = .white
 }
 
-struct LineColors {
+public struct LineColors {
     static let tpgLinesColor: [String: LineColor] = {
         let colors = [
             LineColor(line: "1", color: Color(hex: "5a1e82")),

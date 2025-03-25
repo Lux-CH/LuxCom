@@ -7,7 +7,7 @@
 
 import Foundation
 
-func reverseGeocode(place: (Double, Double), type: LocationType? = nil) async throws -> [SearchResult] {
+public func reverseGeocode(place: (Double, Double), type: LocationType? = nil) async throws -> [SearchResult] {
     var queryItems = [
         URLQueryItem(name: "place", value: "\(place.0), \(place.1)")
     ]

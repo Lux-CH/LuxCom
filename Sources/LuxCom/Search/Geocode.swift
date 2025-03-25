@@ -7,7 +7,7 @@
 
 import Foundation
 
-func geocode(text: String, language: String = "fr", type: LocationType? = nil) async throws -> [SearchResult] {
+public func geocode(text: String, language: String = "fr", type: LocationType? = nil) async throws -> [SearchResult] {
     var queryItems = [
         URLQueryItem(name: "text", value: text),
         URLQueryItem(name: "language", value: language)
