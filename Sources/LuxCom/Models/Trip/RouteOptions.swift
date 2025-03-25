@@ -1,3 +1,9 @@
+//
+//  RouteOptions.swift
+//  LuxCom
+//
+//  Created by Constantin Clerc on 20.03.2025.
+//
 /// - Parameters:
 ///   - from: A coordinates tuple `(latitude, longitude)` representing the starting location.
 ///   - to: A coordinates tuple `(latitude, longitude)` representing the destination location.
@@ -17,7 +23,9 @@
 ///   - maxPreTransitTime: The maximum allowed time (in seconds) before boarding the first transit vehicle.
 ///   - maxPostTransitTime: The maximum allowed time (in seconds) after leaving the last transit vehicle.
 
-struct RouteOptions {
+import Foundation
+
+public struct RouteOptions {
     let from: (Double, Double)
     let to: (Double, Double)
     let via: [String]?
@@ -27,8 +35,8 @@ struct RouteOptions {
     let maxTransfers: Int
     let minTransferTime: Int
     let pedestrianProfile: PedestrianProfile
-    let useRoutedTransfers: Bool
-    let detailedTransfers: Bool
+    let useRoutedTransfers: Bool? = false
+    let detailedTransfers: Bool? = true
     let transitModes: [TransportationMode]?
     let numItineraries: Int?
     let pageCursor: String?

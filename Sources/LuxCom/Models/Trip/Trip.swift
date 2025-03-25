@@ -7,10 +7,11 @@
 
 import Foundation
 
-struct Itinerary: Codable {
-    let duration: Int
-    let startTime: Date
-    let endTime: Date
-    let transfersNumber: Int
-    
+public struct Trip: Codable {
+    let from: Place
+    let to: Place
+    let direct: [Itinerary]
+    let itineraries: [Itinerary]
+    let previousPageCursor: String
+    let nextPageCursor: String
 }
