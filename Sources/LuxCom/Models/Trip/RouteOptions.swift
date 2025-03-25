@@ -1,0 +1,38 @@
+/// - Parameters:
+///   - from: A coordinates tuple `(latitude, longitude)` representing the starting location.
+///   - to: A coordinates tuple `(latitude, longitude)` representing the destination location.
+///   - via: Via different stops
+///   - viaMinimumStay: An array of minimum stay durations (in minutes) at each waypoint.
+///   - time: The reference date/time for route calculation. Defaults to the current date/time.
+///   - arriveBy: A Boolean indicating whether the route should arrive by the specified time (`true`) or depart at the specified time (`false`). Defaults to `false`.
+///   - maxTransfers: The maximum number of allowed transfers during the trip.
+///   - minTransferTime: The minimum transfer time (in seconds) required between connections.
+///   - pedestrianProfile: The pedestrian profile for walking segments (walking/wheelchair).
+///   - useRoutedTransfers: A Boolean indicating whether to use precomputed transfer routes from OSM. Defaults to `false`.
+///   - detailedTransfers: A Boolean indicating whether to include transfer polylines and step-by-step instructions. Defaults to `false`.
+///   - transitModes: An optional array of allowed transportation modes (e.g., bus, subway, tram).
+///   - numItineraries: An optional number specifying the maximum number of route options to return.
+///   - pageCursor: An optional string for paginating results.
+///   - timetableView: Defaults to `false`.
+///   - maxPreTransitTime: The maximum allowed time (in seconds) before boarding the first transit vehicle.
+///   - maxPostTransitTime: The maximum allowed time (in seconds) after leaving the last transit vehicle.
+
+struct RouteOptions {
+    let from: (Double, Double)
+    let to: (Double, Double)
+    let via: [String]?
+    let viaMinimumStay: [Int]
+    let time: Date?
+    let arriveBy: Bool
+    let maxTransfers: Int
+    let minTransferTime: Int
+    let pedestrianProfile: PedestrianProfile
+    let useRoutedTransfers: Bool
+    let detailedTransfers: Bool
+    let transitModes: [TransportationMode]?
+    let numItineraries: Int?
+    let pageCursor: String?
+    let timetableView: Bool
+    let maxPreTransitTime: Int?
+    let maxPostTransitTime: Int?
+}
