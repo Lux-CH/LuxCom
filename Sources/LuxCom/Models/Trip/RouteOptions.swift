@@ -25,7 +25,7 @@
 
 import Foundation
 
-public struct RouteOptions {
+public struct RouteOptions: Sendable {
     let from: (Double, Double)
     let to: (Double, Double)
     let via: [String]?

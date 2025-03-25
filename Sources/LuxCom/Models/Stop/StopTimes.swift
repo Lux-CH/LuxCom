@@ -5,7 +5,7 @@
 //  Created by Constantin Clerc on 12.03.2025.
 //
 
-public struct StopTimes: Codable {
+public struct StopTimes: Codable, Sendable {
     let stopTimes: [StopTime]
     let previousPageCursor: String
     let nextPageCursor: String

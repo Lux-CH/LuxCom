@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Itinerary: Codable {
+public struct Itinerary: Codable, Sendable {
     let duration: Int
     let startTime: Date
     let endTime: Date

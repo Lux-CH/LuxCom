@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Direction: String, Codable {
+public enum Direction: String, Codable, Sendable {
     case depart = "DEPART"
     case hardLeft = "HARD_LEFT"
     case left = "LEFT"
@@ -24,7 +24,7 @@ public enum Direction: String, Codable {
     case uturnRight = "UTURN_RIGHT"
 }
 
-public struct StepInstruction: Codable {
+public struct StepInstruction: Codable, Sendable {
     let relativeDirection: Direction
     let distance: Double
     let fromLevel: Int

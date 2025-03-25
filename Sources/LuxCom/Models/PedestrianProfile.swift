@@ -5,7 +5,7 @@
 //  Created by Constantin Clerc on 20.03.2025.
 //
 
-public enum PedestrianProfile: String, Codable, Hashable {
+public enum PedestrianProfile: String, Codable, Hashable, Sendable {
     case foot = "FOOT"
     case wheelchair = "WHEELCHAIR"
 }

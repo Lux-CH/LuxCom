@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SearchResult: Codable, Identifiable {
+public struct SearchResult: Codable, Identifiable, Sendable {
     let type: LocationType
     let tokens: [[Int]]
     let name: String

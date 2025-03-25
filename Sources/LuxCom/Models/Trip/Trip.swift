@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Trip: Codable {
+public struct Trip: Codable, Sendable {
     let from: Place
     let to: Place
     let direct: [Itinerary]

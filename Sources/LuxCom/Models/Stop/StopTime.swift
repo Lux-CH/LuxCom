@@ -5,7 +5,7 @@
 //  Created by Constantin Clerc on 12.03.2025.
 //
 
-public struct StopTime: Codable {
+public struct StopTime: Codable, Sendable {
     let place: Place
     let mode: TransportationMode
     let realTime: Bool

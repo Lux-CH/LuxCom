@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Leg: Codable {
+public struct Leg: Codable, Sendable {
     let mode: TransportationMode
     let from: Place
     let to: Place

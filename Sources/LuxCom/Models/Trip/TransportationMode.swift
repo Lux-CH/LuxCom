@@ -5,7 +5,7 @@
 //  Created by Constantin Clerc on 12.03.2025.
 //
 
-public enum TransportationMode: String, Codable, Hashable {
+public enum TransportationMode: String, Codable, Hashable, Sendable {
     case walk = "WALK"
     case bike = "BIKE"
     case rental = "RENTAL"
