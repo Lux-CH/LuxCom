@@ -8,26 +8,26 @@
 import Foundation
 
 public struct SearchResult: Codable, Identifiable, Sendable {
-    let type: LocationType
-    let tokens: [[Int]]
-    let name: String
+    public let type: LocationType
+    public let tokens: [[Int]]
+    public let name: String
     public let id: String
-    let lat: Double
-    let lon: Double
-    let level: Double?
-    let street: String?
-    let houseNumber: String?
-    let zip: String?
-    let areas: [Area]
-    let score: Double
+    public let lat: Double
+    public let lon: Double
+    public let level: Double?
+    public let street: String?
+    public let houseNumber: String?
+    public let zip: String?
+    public let areas: [Area]
+    public let score: Double
     
-    struct Area: Codable {
-        let name: String
-        let adminLevel: Int
-        let matched: Bool
-        let `default`: Bool?
+    public struct Area: Codable, Sendable {
+        public let name: String
+        public let adminLevel: Int
+        public let matched: Bool
+        public let `default`: Bool?
         
-        enum CodingKeys: String, CodingKey {
+        public enum CodingKeys: String, CodingKey {
             case name
             case adminLevel
             case matched

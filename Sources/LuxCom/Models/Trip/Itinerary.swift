@@ -8,9 +8,9 @@
 import Foundation
 
 public struct Itinerary: Codable, Sendable {
-    let duration: Int
-    let startTime: Date
-    let endTime: Date
-    let transfers: Int
-    let legs: [Leg]
+    public let duration: Int
+    public let startTime: Date
+    public let endTime: Date
+    public let transfers: Int
+    public let legs: [Leg]
 }

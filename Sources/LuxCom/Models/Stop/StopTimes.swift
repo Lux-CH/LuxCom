@@ -6,7 +6,7 @@
 //
 
 public struct StopTimes: Codable, Sendable {
-    let stopTimes: [StopTime]
-    let previousPageCursor: String
-    let nextPageCursor: String
+    public let stopTimes: [StopTime]
+    public let previousPageCursor: String
+    public let nextPageCursor: String
 }

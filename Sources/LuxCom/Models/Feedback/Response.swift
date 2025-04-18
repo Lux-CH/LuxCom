@@ -6,20 +6,20 @@
 //
 
 public struct InfoResponse: Decodable, Sendable {
-    struct AttributeInfo: Decodable, Sendable {
-        let level: Double
-        let trustLevel: Double
-        let reportCount: Int
-        let totalWeight: Double
+    public struct AttributeInfo: Decodable, Sendable {
+        public let level: Double
+        public let trustLevel: Double
+        public let reportCount: Int
+        public let totalWeight: Double
     }
     
-    struct RealtimeInfo: Decodable, Sendable {
-        let level: Int
-        let trustLevel: Int
-        let timestamp: Int64
-        let distance: Double
+    public struct RealtimeInfo: Decodable, Sendable {
+        public let level: Int
+        public let trustLevel: Int
+        public let timestamp: Int64
+        public let distance: Double
     }
     
-    let average: [String: AttributeInfo]
-    let rt: [String: RealtimeInfo]?
+    public let average: [String: AttributeInfo]
+    public let rt: [String: RealtimeInfo]?
 }

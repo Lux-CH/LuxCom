@@ -16,10 +16,10 @@ public enum ReportAttribute: String, Codable, Hashable {
 }
 
 public struct Report: Codable, Hashable {
-    let tripId: String
-    let routeShortName: String
-    let latitude: Double
-    let longitude: Double
-    let attribute: ReportAttribute
-    let level: Int
+    public let tripId: String
+    public let routeShortName: String
+    public let latitude: Double
+    public let longitude: Double
+    public let attribute: ReportAttribute
+    public let level: Int
 }

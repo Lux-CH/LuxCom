@@ -25,13 +25,13 @@ public enum Direction: String, Codable, Sendable {
 }
 
 public struct StepInstruction: Codable, Sendable {
-    let relativeDirection: Direction
-    let distance: Double
-    let fromLevel: Int
-    let toLevel: Int
-    let osmWay: Int?
-    let streetName: String
-    let exit: String
-    let stayOn: Bool
-    let area: Bool
+    public let relativeDirection: Direction
+    public let distance: Double
+    public let fromLevel: Int
+    public let toLevel: Int
+    public let osmWay: Int?
+    public let streetName: String
+    public let exit: String
+    public let stayOn: Bool
+    public let area: Bool
 }

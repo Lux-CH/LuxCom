@@ -8,10 +8,10 @@
 import Foundation
 
 public struct Trip: Codable, Sendable {
-    let from: Place
-    let to: Place
-    let direct: [Itinerary]
-    let itineraries: [Itinerary]
-    let previousPageCursor: String
-    let nextPageCursor: String
+    public let from: Place
+    public let to: Place
+    public let direct: [Itinerary]
+    public let itineraries: [Itinerary]
+    public let previousPageCursor: String
+    public let nextPageCursor: String
 }

@@ -26,21 +26,21 @@
 import Foundation
 
 public struct RouteOptions: Sendable {
-    let from: (Double, Double)
-    let to: (Double, Double)
-    let via: [String]?
-    let viaMinimumStay: [Int]
-    let time: Date?
-    let arriveBy: Bool
-    let maxTransfers: Int
-    let minTransferTime: Int
-    let pedestrianProfile: PedestrianProfile
-    let useRoutedTransfers: Bool? = false
-    let detailedTransfers: Bool? = true
-    let transitModes: [TransportationMode]?
-    let numItineraries: Int?
-    let pageCursor: String?
-    let timetableView: Bool
-    let maxPreTransitTime: Int?
-    let maxPostTransitTime: Int?
+    public let from: (Double, Double)
+    public let to: (Double, Double)
+    public let via: [String]?
+    public let viaMinimumStay: [Int]
+    public let time: Date?
+    public let arriveBy: Bool
+    public let maxTransfers: Int
+    public let minTransferTime: Int
+    public let pedestrianProfile: PedestrianProfile
+    public let useRoutedTransfers: Bool? = false
+    public let detailedTransfers: Bool? = true
+    public let transitModes: [TransportationMode]?
+    public let numItineraries: Int?
+    public let pageCursor: String?
+    public let timetableView: Bool
+    public let maxPreTransitTime: Int?
+    public let maxPostTransitTime: Int?
 }

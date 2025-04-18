@@ -8,16 +8,16 @@
 import Foundation
 
 public struct Place: Codable, Sendable {
-    let name: String
-    let stopId: String?
-    let lat: Double
-    let lon: Double
-    let level: Int
-    let arrival: Date?
-    let departure: Date?
-    let scheduledArrival: Date?
-    let scheduledDeparture: Date?
-    let scheduledTrack: String?
+    public let name: String
+    public let stopId: String?
+    public let lat: Double
+    public  let lon: Double
+    public let level: Int
+    public let arrival: Date?
+    public let departure: Date?
+    public let scheduledArrival: Date?
+    public let scheduledDeparture: Date?
+    public let scheduledTrack: String?
     private let _track: String?
     
     // The track is determined by the stopID (as provided by OTD)
@@ -26,7 +26,7 @@ public struct Place: Codable, Sendable {
     // F here is the track. Thus we extract this.
     // In case something bad occurs, we fallback to the original track attrib (here mapped on _track) from API.
     
-    var track: String? {
+    public var track: String? {
         stopId?.components(separatedBy: ":").last ?? _track
     }
     
@@ -38,7 +38,7 @@ public struct Place: Codable, Sendable {
         case transit = "TRANSIT"
     }
     
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case name, stopId, lat, lon, level, arrival, departure
         case scheduledArrival, scheduledDeparture, scheduledTrack
         case _track = "track"

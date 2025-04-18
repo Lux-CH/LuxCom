@@ -8,18 +8,18 @@
 import Foundation
 
 public struct Leg: Codable, Sendable {
-    let mode: TransportationMode
-    let from: Place
-    let to: Place
-    let duration: Int // in seconds
-    let startTime: Date
-    let endTime: Date
-    let scheduledStartTime: Date
-    let scheduledEndTime: Date
-    let realTime: Bool
-    let distance: Double?
-    let headsign: String?
-    let routeShortName: String?
-    let intermediateStops: [Place]?
-    let steps: [StepInstruction]?
+    public let mode: TransportationMode
+    public let from: Place
+    public let to: Place
+    public let duration: Int // in seconds
+    public let startTime: Date
+    public let endTime: Date
+    public let scheduledStartTime: Date
+    public let scheduledEndTime: Date
+    public let realTime: Bool
+    public let distance: Double?
+    public let headsign: String?
+    public let routeShortName: String?
+    public let intermediateStops: [Place]?
+    public let steps: [StepInstruction]?
 }

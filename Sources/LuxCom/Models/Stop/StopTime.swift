@@ -6,10 +6,10 @@
 //
 
 public struct StopTime: Codable, Sendable {
-    let place: Place
-    let mode: TransportationMode
-    let realTime: Bool
-    let headSign: String?
-    let routeShortName: String
-    let tripId: String
+    public let place: Place
+    public let mode: TransportationMode
+    public let realTime: Bool
+    public let headSign: String?
+    public let routeShortName: String
+    public let tripId: String
 }
