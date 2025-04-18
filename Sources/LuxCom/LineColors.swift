@@ -13,6 +13,12 @@ public struct LineColor: Hashable, Sendable {
     public var line: String
     public var color: Color
     public var textColor: Color = .white
+    
+    public init(line: String, color: Color, textColor: Color = .white) {
+        self.line = line
+        self.color = color
+        self.textColor = textColor
+    }
 }
 
 public struct LineColors {
