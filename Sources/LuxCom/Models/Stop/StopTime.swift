@@ -10,7 +10,7 @@ public struct StopTime: Codable, Sendable, Identifiable {
     public let place: Place
     public let mode: TransportationMode
     public let realTime: Bool
-    public let headSign: String?
+    public let headsign: String?
     public let routeShortName: String
     public let tripId: String
 }
