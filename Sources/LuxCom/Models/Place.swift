@@ -27,7 +27,8 @@ public struct Place: Codable, Sendable {
     // In case something bad occurs, we fallback to the original track attrib (here mapped on _track) from API.
     
     public var track: String? {
-        stopId?.components(separatedBy: ":").last ?? _track
+        let trackValue = stopId?.components(separatedBy: ":").last ?? _track
+        return trackValue?.hasPrefix("ch_") == true ? nil : trackValue
     }
     
     let vertexType: VertexType
