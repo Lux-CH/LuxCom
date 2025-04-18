@@ -136,11 +136,11 @@ public struct LineColors {
         return Dictionary(uniqueKeysWithValues: colors.map { ($0.line, $0) })
     }()
     
-    static func color(for line: String) -> Color? {
+    public static func color(for line: String) -> Color? {
         return tpgLinesColor[line]?.color
     }
     
-    static func textColor(for line: String) -> Color? {
+    public static func textColor(for line: String) -> Color? {
         return tpgLinesColor[line]?.textColor
     }
 }
