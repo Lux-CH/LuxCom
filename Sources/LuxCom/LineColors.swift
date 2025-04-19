@@ -13,17 +13,11 @@ public struct LineColor: Hashable, Sendable {
     public var line: String
     public var color: Color
     public var textColor: Color = .white
-    
-    public init(line: String, color: Color, textColor: Color = .white) {
-        self.line = line
-        self.color = color
-        self.textColor = textColor
-    }
 }
 
 public struct LineColors {
     static let tpgLinesColor: [String: LineColor] = {
-        let colors = [
+        var colors = [
             LineColor(line: "1", color: Color(hex: "5a1e82")),
             LineColor(line: "2", color: Color(hex: "D2DB4A"), textColor: .black),
             LineColor(line: "3", color: Color(hex: "B82F89")),
@@ -131,7 +125,21 @@ public struct LineColors {
             
             LineColor(line: "94", color: Color(hex: "000000")),
             LineColor(line: "96", color: Color(hex: "000000")),
-            LineColor(line: "97", color: Color(hex: "000000"))
+            LineColor(line: "97", color: Color(hex: "000000")),
+            
+            // trains
+            LineColor(line: "RL1", color: Color(hex: "E4023A")),
+            LineColor(line: "RL2", color: Color(hex: "0385CD")),
+            LineColor(line: "RL3", color: Color(hex: "64B32E")),
+            LineColor(line: "RL4", color: Color(hex: "F8B003")),
+            LineColor(line: "RL5", color: Color(hex: "C0096F")),
+            LineColor(line: "RL6", color: Color(hex: "019AAA")),
+            
+            // mouettes
+            LineColor(line: "M1", color: Color(hex: "0076BA")),
+            LineColor(line: "M2", color: Color(hex: "FF6600")),
+            LineColor(line: "M3", color: Color(hex: "068A33")),
+            LineColor(line: "M4", color: Color(hex: "B10D28"))
         ]
         return Dictionary(uniqueKeysWithValues: colors.map { ($0.line, $0) })
     }()
