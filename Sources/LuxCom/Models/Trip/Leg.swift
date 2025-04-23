@@ -21,5 +21,6 @@ public struct Leg: Codable, Sendable {
     public let headsign: String?
     public let routeShortName: String?
     public let intermediateStops: [Place]?
+    public let legGeometry: LegGeometry
     public let steps: [StepInstruction]?
 }
