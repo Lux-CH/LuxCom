@@ -34,4 +34,33 @@ public struct SearchResult: Codable, Identifiable, Sendable {
             case `default` = "default"
         }
     }
+    
+    // Explicit initializer
+    public init(
+        type: LocationType,
+        tokens: [[Int]],
+        name: String,
+        id: String,
+        lat: Double,
+        lon: Double,
+        level: Double? = nil,
+        street: String? = nil,
+        houseNumber: String? = nil,
+        zip: String? = nil,
+        areas: [Area],
+        score: Double
+    ) {
+        self.type = type
+        self.tokens = tokens
+        self.name = name
+        self.id = id
+        self.lat = lat
+        self.lon = lon
+        self.level = level
+        self.street = street
+        self.houseNumber = houseNumber
+        self.zip = zip
+        self.areas = areas
+        self.score = score
+    }
 }
