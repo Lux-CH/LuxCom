@@ -63,7 +63,7 @@ public struct LineColors {
             LineColor(line: "47", color: Color(hex: "00B0A4")),
             LineColor(line: "48", color: Color(hex: "89CBBE"), textColor: .black),
             // https://tpg.fandom.com/fr/wiki/Ligne_49
-            LineColor(line: "49", color: Color(hex: "015E63")),
+            LineColor(line: "49", color: Color(hex: "005E63")),
             LineColor(line: "50", color: Color(hex: "00B0A4")),
             LineColor(line: "51", color: Color(hex: "00B0A4")),
             LineColor(line: "52", color: Color(hex: "89CBBE"), textColor: .black),
@@ -98,6 +98,7 @@ public struct LineColors {
             LineColor(line: "83", color: Color(hex: "EC619F")),
             LineColor(line: "91", color: Color(hex: "005F61")),
             LineColor(line: "92", color: Color(hex: "89CBBE"), textColor: .black),
+            LineColor(line: "97", color: Color(hex: "6CB43F")),
             LineColor(line: "A", color: Color(hex: "FF7E00")),
             LineColor(line: "E", color: Color(hex: "FF7E00")),
             LineColor(line: "G", color: Color(hex: "FF9BAA")),
@@ -139,7 +140,29 @@ public struct LineColors {
             LineColor(line: "M1", color: Color(hex: "0076BA")),
             LineColor(line: "M2", color: Color(hex: "FF6600")),
             LineColor(line: "M3", color: Color(hex: "068A33")),
-            LineColor(line: "M4", color: Color(hex: "B10D28"))
+            LineColor(line: "M4", color: Color(hex: "B10D28")),
+            
+            // navettes aeroport
+            LineColor(line: "A", color: Color(hex: "F58428")),
+            LineColor(line: "A1", color: Color(hex: "7D78B7")),
+            LineColor(line: "A2", color: Color(hex: "00744A")),
+            LineColor(line: "A3", color: Color(hex: "0DAE4B")),
+            LineColor(line: "A4", color: Color(hex: "009FDF")),
+            LineColor(line: "A5", color: Color(hex: "F167A7")),
+            LineColor(line: "A6", color: Color(hex: "DA2031")),
+            
+            // tpn
+            LineColor(line: "803", color: Color(hex: "E63023")),
+            LineColor(line: "804", color: Color(hex: "009640")),
+            LineColor(line: "805", color: Color(hex: "F07D00")),
+            LineColor(line: "810", color: Color(hex: "C693C2")),
+            LineColor(line: "811", color: Color(hex: "96358C")),
+            LineColor(line: "813", color: Color(hex: "F39DA9")),
+            LineColor(line: "814", color: Color(hex: "00437A")),
+            LineColor(line: "815", color: Color(hex: "AD222B")),
+            LineColor(line: "818", color: Color(hex: "85431D")),
+            LineColor(line: "891", color: Color(hex: "FFE52D")),
+            LineColor(line: "R55", color: Color(hex: "EE2720")),
         ]
         return Dictionary(uniqueKeysWithValues: colors.map { ($0.line, $0) })
     }()
