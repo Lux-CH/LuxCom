@@ -15,11 +15,11 @@
 ///   - minTransferTime: The minimum transfer time (in seconds) required between connections.
 ///   - pedestrianProfile: The pedestrian profile for walking segments (walking/wheelchair).
 ///   - useRoutedTransfers: A Boolean indicating whether to use precomputed transfer routes from OSM. Defaults to `false`.
-///   - detailedTransfers: A Boolean indicating whether to include transfer polylines and step-by-step instructions. Defaults to `false`.
+///   - detailedTransfers: A Boolean indicating whether to include transfer polylines and step-by-step instructions. Defaults to `true`.
 ///   - transitModes: An optional array of allowed transportation modes (e.g., bus, subway, tram).
 ///   - numItineraries: An optional number specifying the maximum number of route options to return.
 ///   - pageCursor: An optional string for paginating results.
-///   - timetableView: Defaults to `false`.
+///   - timetableView: Defaults to `true`.
 ///   - maxPreTransitTime: The maximum allowed time (in seconds) before boarding the first transit vehicle.
 ///   - maxPostTransitTime: The maximum allowed time (in seconds) after leaving the last transit vehicle.
 

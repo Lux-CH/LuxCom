@@ -33,6 +33,12 @@ public struct SearchResult: Codable, Identifiable, Sendable {
             case matched
             case `default` = "default"
         }
+        public init(name: String, adminLevel: Int, matched: Bool, `default`: Bool?) {
+            self.name = name
+            self.adminLevel = adminLevel
+            self.matched = matched
+            self.`default` = `default`
+        }
     }
     
     // Explicit initializer
