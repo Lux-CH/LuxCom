@@ -7,7 +7,7 @@
 
 import Foundation
 
-let apiUrl = "https://lux.cclerc.ch/api/v1"
+let apiUrl = "https://lux.cclerc.ch/api"
 let cbURL = "http://crowdback.lux.cclerc.ch"
 
 public struct LuxCom {

@@ -16,13 +16,14 @@ enum APIError: Error {
 struct APIClient {
     static func fetch<T: Decodable>(
         from endpoint: String,
+        apiVersion: String = "v1",
         queryItems: [URLQueryItem],
         baseURL: String = apiUrl,
         headers: [String: String] = [:],
         method: String = "GET",
         body: Data? = nil
     ) async throws -> T {
-        guard var components = URLComponents(string: "\(baseURL)\(endpoint)") else {
+        guard var components = URLComponents(string: "\(baseURL)/\(apiVersion)/\(endpoint)") else {
             throw APIError.invalidURL
         }
         
