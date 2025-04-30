@@ -23,7 +23,7 @@ struct APIClient {
         method: String = "GET",
         body: Data? = nil
     ) async throws -> T {
-        guard var components = URLComponents(string: "\(baseURL)/\(apiVersion)/\(endpoint)") else {
+        guard var components = URLComponents(string: "\(baseURL)/\(apiVersion)\(endpoint)") else {
             throw APIError.invalidURL
         }
         
