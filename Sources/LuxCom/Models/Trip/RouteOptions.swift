@@ -43,4 +43,22 @@ public struct RouteOptions: Sendable {
     public let timetableView: Bool
     public let maxPreTransitTime: Int?
     public let maxPostTransitTime: Int?
+    
+    public init(from: (Double, Double), to: (Double, Double), via: [String]?, viaMinimumStay: [Int], time: Date?, arriveBy: Bool, maxTransfers: Int, minTransferTime: Int, pedestrianProfile: PedestrianProfile, transitModes: [TransportationMode]?, numItineraries: Int?, pageCursor: String?, timetableView: Bool, maxPreTransitTime: Int?, maxPostTransitTime: Int?) {
+        self.from = from
+        self.to = to
+        self.via = via
+        self.viaMinimumStay = viaMinimumStay
+        self.time = time
+        self.arriveBy = arriveBy
+        self.maxTransfers = maxTransfers
+        self.minTransferTime = minTransferTime
+        self.pedestrianProfile = pedestrianProfile
+        self.transitModes = transitModes
+        self.numItineraries = numItineraries
+        self.pageCursor = pageCursor
+        self.timetableView = timetableView
+        self.maxPreTransitTime = maxPreTransitTime
+        self.maxPostTransitTime = maxPostTransitTime
+    }
 }
