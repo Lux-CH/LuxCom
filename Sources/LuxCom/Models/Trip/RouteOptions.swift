@@ -39,7 +39,7 @@ public struct RouteOptions: Sendable {
     public let detailedTransfers: Bool? = true
     public let transitModes: [TransportationMode]?
     public let numItineraries: Int?
-    public let pageCursor: String?
+    public var pageCursor: String?
     public let timetableView: Bool
     public let maxPreTransitTime: Int?
     public let maxPostTransitTime: Int?
