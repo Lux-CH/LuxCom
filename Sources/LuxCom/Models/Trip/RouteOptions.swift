@@ -35,7 +35,8 @@ public struct RouteOptions: Sendable {
     public let maxTransfers: Int
     public let minTransferTime: Int
     public let pedestrianProfile: PedestrianProfile
-    public let useRoutedTransfers: Bool? = false
+    public let useRoutedTransfers: Bool? = true
+    public let maxMatchingDistance: Int? = 250
     public let detailedTransfers: Bool? = true
     public let transitModes: [TransportationMode]?
     public let numItineraries: Int?
