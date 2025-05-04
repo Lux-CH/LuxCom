@@ -26,7 +26,6 @@ struct APIClient {
         guard var components = URLComponents(string: "\(baseURL)/\(apiVersion)\(endpoint)") else {
             throw APIError.invalidURL
         }
-        print(components)
         
         components.queryItems = queryItems
         
@@ -44,6 +43,8 @@ struct APIClient {
         if let body = body {
             request.httpBody = body
         }
+        print(components)
+        print(request.httpBody ?? "")
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
