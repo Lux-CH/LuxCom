@@ -26,6 +26,7 @@ struct APIClient {
         guard var components = URLComponents(string: "\(baseURL)/\(apiVersion)\(endpoint)") else {
             throw APIError.invalidURL
         }
+        print(components)
         
         components.queryItems = queryItems
         
