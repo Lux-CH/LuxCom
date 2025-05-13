@@ -24,7 +24,7 @@ public enum Direction: String, Codable, Sendable {
     case uturnRight = "UTURN_RIGHT"
 }
 
-public struct StepInstruction: Codable, Sendable {
+public struct StepInstruction: Codable, Sendable, Hashable {
     public let relativeDirection: Direction
     public let distance: Double
     public let fromLevel: Int
