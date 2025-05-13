@@ -22,4 +22,12 @@ public struct Itinerary: Codable, Sendable, Equatable {
         lhs.transfers == rhs.transfers &&
         lhs.legs.count == rhs.legs.count
     }
+    
+    public init(duration: Int, startTime: Date, endTime: Date, transfers: Int, legs: [Leg]) {
+        self.duration = duration
+        self.startTime = startTime
+        self.endTime = endTime
+        self.transfers = transfers
+        self.legs = legs
+    }
 }
