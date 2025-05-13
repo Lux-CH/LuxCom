@@ -34,4 +34,11 @@ public struct StepInstruction: Codable, Sendable, Hashable {
     public let exit: String
     public let stayOn: Bool
     public let area: Bool
+    public let polyline: StepPolyline
+}
+
+public struct StepPolyline: Codable, Sendable, Hashable {
+    public let points: String
+    public let precision: Int
+    public let length: Int
 }
