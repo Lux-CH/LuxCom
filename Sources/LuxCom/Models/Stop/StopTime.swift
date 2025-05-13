@@ -13,4 +13,6 @@ public struct StopTime: Codable, Sendable, Identifiable {
     public let headsign: String?
     public let routeShortName: String
     public let tripId: String
+    public let agencyId: String
+    public let cancelled: Bool
 }
