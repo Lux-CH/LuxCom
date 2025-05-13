@@ -12,7 +12,7 @@ public struct Place: Codable, Hashable, Sendable {
     public let stopId: String?
     public let lat: Double
     public  let lon: Double
-    public let level: Int
+    public let level: Double
     public let arrival: Date?
     public let departure: Date?
     public let scheduledArrival: Date?

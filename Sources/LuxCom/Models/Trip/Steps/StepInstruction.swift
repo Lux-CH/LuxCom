@@ -27,15 +27,15 @@ public enum Direction: String, Codable, Sendable {
 public struct StepInstruction: Codable, Sendable, Hashable {
     public let relativeDirection: Direction
     public let distance: Double
-    public let fromLevel: Int
-    public let toLevel: Int
+    public let fromLevel: Double
+    public let toLevel: Double
     public let osmWay: Int?
     public let streetName: String
     public let exit: String
     public let stayOn: Bool
     public let area: Bool
     public let polyline: StepPolyline
-    public init(relativeDirection: Direction, distance: Double, fromLevel: Int, toLevel: Int, osmWay: Int?, streetName: String, exit: String, stayOn: Bool, area: Bool, polyline: StepPolyline) {
+    public init(relativeDirection: Direction, distance: Double, fromLevel: Double, toLevel: Double, osmWay: Int?, streetName: String, exit: String, stayOn: Bool, area: Bool, polyline: StepPolyline) {
         self.relativeDirection = relativeDirection
         self.distance = distance
         self.fromLevel = fromLevel
