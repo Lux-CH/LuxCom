@@ -35,10 +35,27 @@ public struct StepInstruction: Codable, Sendable, Hashable {
     public let stayOn: Bool
     public let area: Bool
     public let polyline: StepPolyline
+    public init(relativeDirection: Direction, distance: Double, fromLevel: Int, toLevel: Int, osmWay: Int?, streetName: String, exit: String, stayOn: Bool, area: Bool, polyline: StepPolyline) {
+        self.relativeDirection = relativeDirection
+        self.distance = distance
+        self.fromLevel = fromLevel
+        self.toLevel = toLevel
+        self.osmWay = osmWay
+        self.streetName = streetName
+        self.exit = exit
+        self.stayOn = stayOn
+        self.area = area
+        self.polyline = polyline
+    }
 }
 
 public struct StepPolyline: Codable, Sendable, Hashable {
     public let points: String
     public let precision: Int
     public let length: Int
+    public init(points: String, precision: Int, length: Int) {
+        self.points = points
+        self.precision = precision
+        self.length = length
+    }
 }
