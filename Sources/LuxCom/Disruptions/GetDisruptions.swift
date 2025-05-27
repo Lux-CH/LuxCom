@@ -7,7 +7,7 @@
 
 import Foundation
 
-public func getDisruptions() async throws -> Disruption {
+public func getDisruptions() async throws -> [Disruption] {
     return try await APIClient.fetch(
         from: "/disruptions",
         queryItems: [],
