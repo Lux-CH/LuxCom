@@ -28,7 +28,7 @@ struct APIClient {
         }
         
         if let query = queryItems {
-            components.queryItems = queryItems
+            components.queryItems = query
         }
         
         guard let url = components.url else {
