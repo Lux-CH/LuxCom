@@ -45,8 +45,6 @@ struct APIClient {
         if let body = body {
             request.httpBody = body
         }
-        
-        print(request)
                         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
