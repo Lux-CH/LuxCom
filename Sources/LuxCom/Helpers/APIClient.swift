@@ -17,7 +17,7 @@ struct APIClient {
     static func fetch<T: Decodable>(
         from endpoint: String,
         apiVersion: String = "v1",
-        queryItems: [URLQueryItem],
+        queryItems: [URLQueryItem]? = nil,
         baseURL: String = apiUrl,
         headers: [String: String] = [:],
         method: String = "GET",
@@ -27,7 +27,9 @@ struct APIClient {
             throw APIError.invalidURL
         }
         
-        components.queryItems = queryItems
+        if let query = queryItems {
+            components.queryItems = queryItems
+        }
         
         guard let url = components.url else {
             throw APIError.invalidURL
@@ -43,9 +45,7 @@ struct APIClient {
         if let body = body {
             request.httpBody = body
         }
-        
-        print(request)
-                
+                        
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
             
