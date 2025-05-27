@@ -10,6 +10,7 @@ import Foundation
 public func getDisruptions() async throws -> [Disruption] {
     return try await APIClient.fetch(
         from: "/disruptions",
+        apiVersion: "",
         baseURL: disruptionsUrl,
     )
 }
