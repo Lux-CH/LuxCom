@@ -82,6 +82,8 @@ public struct TicketsInfo {
         TicketInfo(title: "Billet local Zone 250", duration: .seconds(3600), smsCode: "250", priceCHF: 1.60, priceEUR: 1.40, category: .frenchZoneTickets, userType: .adulte),
         TicketInfo(title: "Billet local Zone 250 (jeune)", duration: .seconds(3600), smsCode: "250r", priceCHF: 1.40, priceEUR: 1.20, category: .frenchZoneTickets, userType: .jeune)
     ]
+    
+    public init() {}
     public func tickets(for category: TicketCategory) -> [TicketInfo] {
         return tickets.filter { $0.category == category }
     }
