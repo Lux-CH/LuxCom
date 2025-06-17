@@ -9,10 +9,10 @@ import SwiftUI
 
 public enum TicketCategory: String, CaseIterable, Hashable, Sendable {
     case toutGeneve = "Tout Genève"
-    case toutGeneveDayPass = "Pass journalier Tout Genève"
+    case frenchZoneTickets = "Billets zones françaises"
     case lemanPassMultizone = "Léman Pass Multizone"
     case complementaryTickets = "Billets complémentaires"
-    case frenchZoneTickets = "Billets zones françaises"
+    case toutGeneveDayPass = "Pass journalier Tout Genève"
 }
 
 public enum UserType: String, CaseIterable, Hashable, Sendable {
