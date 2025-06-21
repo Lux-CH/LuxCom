@@ -62,5 +62,5 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
         queryItems.append(URLQueryItem(name: "maxPostTransitTime", value: String(maxPostTransitTime)))
     }
     
-    return try await APIClient.fetch(from: "/plan", apiVersion: "v3", queryItems: queryItems)
+    return try await APIClient.fetch(from: "/plan", apiVersion: "v2", queryItems: queryItems)
 }
