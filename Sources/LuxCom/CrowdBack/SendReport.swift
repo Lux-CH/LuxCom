@@ -52,4 +52,4 @@ public func sendLCBReport(
     )
 }
 
-public struct EmptyResponse: Decodable {}
+public struct EmptyResponse: Decodable, Sendable {}
