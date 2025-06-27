@@ -43,6 +43,7 @@ public func sendLCBReport(
     
     return try await APIClient.fetch(
         from: endpoint,
+        apiVersion: "",
         queryItems: [],
         baseURL: baseURLString,
         headers: headers,
