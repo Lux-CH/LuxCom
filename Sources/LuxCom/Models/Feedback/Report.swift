@@ -22,4 +22,12 @@ public struct Report: Codable, Hashable {
     public let longitude: Double
     public let attribute: ReportAttribute
     public let level: Int
+    init(tripId: String, routeShortName: String, latitude: Double, longitude: Double, attribute: ReportAttribute, level: Int) {
+        self.tripId = tripId
+        self.routeShortName = routeShortName
+        self.latitude = latitude
+        self.longitude = longitude
+        self.attribute = attribute
+        self.level = level
+    }
 }
