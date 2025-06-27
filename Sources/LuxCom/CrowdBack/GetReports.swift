@@ -38,7 +38,7 @@ public func getLCBInfo(
         
     return try await APIClient.fetch(
         from: "/info",
-        apiVersion: "",
+        apiVersion: "v1",
         queryItems: queryItems,
         baseURL: baseURLString
     )
