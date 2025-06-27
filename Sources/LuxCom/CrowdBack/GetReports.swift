@@ -22,8 +22,7 @@ public func getLCBInfo(
     routeShortName: String,
     latitude: Double,
     longitude: Double,
-    attribute: ReportAttribute? = nil,
-    authToken: String,
+    attribute: ReportAttribute? = nil
 ) async throws -> InfoResponse {
     let baseURLString = cbURL
     
@@ -36,13 +35,10 @@ public func getLCBInfo(
     if let attribute = attribute {
         queryItems.append(URLQueryItem(name: "attribute", value: attribute.rawValue))
     }
-    
-    let headers = ["Authorization": authToken]
-    
+        
     return try await APIClient.fetch(
         from: "/info",
         queryItems: queryItems,
         baseURL: baseURLString,
-        headers: headers
     )
 }

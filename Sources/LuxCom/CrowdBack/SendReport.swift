@@ -10,7 +10,6 @@ import Foundation
 @discardableResult
 public func sendLCBReport(
     report: Report,
-    authToken: String,
     baseURL: URL? = nil
 ) async throws -> EmptyResponse {
     let baseURLString = baseURL?.absoluteString ?? cbURL
@@ -40,7 +39,6 @@ public func sendLCBReport(
     let jsonData = try JSONSerialization.data(withJSONObject: bodyDict)
     let headers = [
         "Content-Type": "application/json",
-        "Authorization": authToken
     ]
     
     return try await APIClient.fetch(
