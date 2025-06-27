@@ -11,7 +11,7 @@ import Foundation
 public func sendLCBReport(
     report: Report,
     baseURL: URL? = nil
-) async throws -> EmptyResponse {
+) async throws -> ReportResponse {
     let baseURLString = baseURL?.absoluteString ?? cbURL
     let endpoint: String
     var bodyDict: [String: Any]
@@ -52,4 +52,7 @@ public func sendLCBReport(
     )
 }
 
-public struct EmptyResponse: Decodable, Sendable {}
+public struct ReportResponse: Decodable, Sendable {
+    let success: Bool
+    let message: String
+}
