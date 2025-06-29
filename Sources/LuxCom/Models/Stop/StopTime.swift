@@ -15,4 +15,14 @@ public struct StopTime: Codable, Sendable, Identifiable {
     public let tripId: String
     public let agencyId: String
     public let cancelled: Bool
+    public init(place: Place, mode: TransportationMode, realTime: Bool, headsign: String?, routeShortName: String, tripId: String, agencyId: String, cancelled: Bool) {
+        self.place = place
+        self.mode = mode
+        self.realTime = realTime
+        self.headsign = headsign
+        self.routeShortName = routeShortName
+        self.tripId = tripId
+        self.agencyId = agencyId
+        self.cancelled = cancelled
+    }
 }
