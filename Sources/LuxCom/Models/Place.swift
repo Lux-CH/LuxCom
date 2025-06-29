@@ -7,9 +7,10 @@
 
 import Foundation
 
-public struct Place: Codable, Hashable, Sendable, Equatable {
+public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
     public let name: String
     public let stopId: String?
+    public var id: String { stopId ?? UUID().uuidString }
     public let lat: Double
     public  let lon: Double
     public let level: Double
