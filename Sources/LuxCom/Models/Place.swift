@@ -32,9 +32,9 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
         return trackValue?.hasPrefix("ch_") == true ? nil : trackValue
     }
     
-    let vertexType: VertexType
+    public let vertexType: VertexType
     
-    enum VertexType: String, Codable {
+    public enum VertexType: String, Codable, Sendable {
         case normal = "NORMAL"
         case bikeshare = "BIKESHARE"
         case transit = "TRANSIT"
@@ -45,5 +45,19 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
         case scheduledArrival, scheduledDeparture, scheduledTrack
         case _track = "track"
         case vertexType
+    }
+    public init(name: String, stopId: String?, lat: Double, lon: Double, level: Double, arrival: Date?, departure: Date?, scheduledArrival: Date?, scheduledDeparture: Date?, scheduledTrack: String?, _track: String?, vertexType: VertexType) {
+        self.name = name
+        self.stopId = stopId
+        self.lat = lat
+        self.lon = lon
+        self.level = level
+        self.arrival = arrival
+        self.departure = departure
+        self.scheduledArrival = scheduledArrival
+        self.scheduledDeparture = scheduledDeparture
+        self.scheduledTrack = scheduledTrack
+        self._track = _track
+        self.vertexType = vertexType
     }
 }
