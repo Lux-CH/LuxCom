@@ -18,7 +18,7 @@ public enum TicketCategory: String, CaseIterable, Hashable, Sendable {
 public enum UserType: String, CaseIterable, Hashable, Sendable {
     case adulte = "Adulte"
     case jeune = "Jeune"
-    case oasiIV = "OASI/IV"
+    case oasiIV = "AVS/AI"
 }
 
 public struct TicketInfo: Hashable, Sendable {
