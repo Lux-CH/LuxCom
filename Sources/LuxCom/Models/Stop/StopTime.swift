@@ -5,7 +5,7 @@
 //  Created by Constantin Clerc on 12.03.2025.
 //
 
-public struct StopTime: Codable, Sendable, Identifiable {
+public struct StopTime: Codable, Sendable, Identifiable, Hashable {
     public var id: String { tripId }
     public let place: Place
     public let mode: TransportationMode
@@ -24,5 +24,13 @@ public struct StopTime: Codable, Sendable, Identifiable {
         self.tripId = tripId
         self.agencyId = agencyId
         self.cancelled = cancelled
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(tripId)
+    }
+    
+    public static func == (lhs: StopTime, rhs: StopTime) -> Bool {
+        return lhs.tripId == rhs.tripId
     }
 }
