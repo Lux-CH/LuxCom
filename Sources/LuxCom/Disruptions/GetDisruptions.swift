@@ -9,7 +9,7 @@ import Foundation
 
 public func getDisruptions() async throws -> [Disruption] {
     return try await APIClient.fetch(
-        from: "disruptions",
+        from: "",
         apiVersion: "",
         baseURL: disruptionsUrl,
     )

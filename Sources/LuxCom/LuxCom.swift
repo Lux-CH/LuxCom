@@ -9,7 +9,7 @@ import Foundation
 
 let apiUrl = "https://lux.cclerc.ch/api"
 let cbURL = "https://crowdback.cclerc.ch"
-let disruptionsUrl = "https://api.tpg-max.smalldev.ch/api"
+let disruptionsUrl = "https://disruptions.cclerc.ch"
 
 public struct LuxCom {
     public init() {}
