@@ -12,8 +12,8 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
     dateFormatter.formatOptions = [.withInternetDateTime]
     
     var queryItems = [
-        URLQueryItem(name: "fromPlace", value: "\(options.from.0),\(options.from.1)"),
-        URLQueryItem(name: "toPlace", value: "\(options.to.0),\(options.to.1)"),
+        URLQueryItem(name: "fromPlace", value: options.from.queryValue),
+        URLQueryItem(name: "toPlace", value: options.to.queryValue),
         URLQueryItem(name: "arriveBy", value: String(options.arriveBy)),
         URLQueryItem(name: "maxTransfers", value: String(options.maxTransfers)),
         URLQueryItem(name: "minTransferTime", value: String(options.minTransferTime)),

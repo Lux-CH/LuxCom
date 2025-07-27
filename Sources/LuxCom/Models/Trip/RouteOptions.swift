@@ -5,8 +5,8 @@
 //  Created by Constantin Clerc on 20.03.2025.
 //
 /// - Parameters:
-///   - from: A coordinates tuple `(latitude, longitude)` representing the starting location.
-///   - to: A coordinates tuple `(latitude, longitude)` representing the destination location.
+///   - from: A coordinates tuple `(latitude, longitude)` representing the starting location/stopId.
+///   - to: A coordinates tuple `(latitude, longitude)` representing the destination location/stopId.
 ///   - via: Via different stops
 ///   - viaMinimumStay: An array of minimum stay durations (in minutes) at each waypoint.
 ///   - time: The reference date/time for route calculation. Defaults to the current date/time.
@@ -26,8 +26,8 @@
 import Foundation
 
 public struct RouteOptions: Sendable {
-    public let from: (Double, Double)
-    public let to: (Double, Double)
+    public let from: RouteLocation
+    public let to: RouteLocation
     public let via: [String]?
     public let viaMinimumStay: [Int]
     public let time: Date?
@@ -45,7 +45,31 @@ public struct RouteOptions: Sendable {
     public let maxPreTransitTime: Int?
     public let maxPostTransitTime: Int?
     
-    public init(from: (Double, Double), to: (Double, Double), via: [String]?, viaMinimumStay: [Int], time: Date?, arriveBy: Bool, maxTransfers: Int, minTransferTime: Int, pedestrianProfile: PedestrianProfile, transitModes: [TransportationMode]?, numItineraries: Int?, pageCursor: String?, timetableView: Bool, maxPreTransitTime: Int?, maxPostTransitTime: Int?) {
+    public struct RouteLocation: Sendable {
+        public let stopId: String?
+        public let coordinates: (Double, Double)?
+        
+        public init(stopId: String) {
+            self.stopId = stopId
+            self.coordinates = nil
+        }
+        
+        public init(coordinates: (Double, Double)) {
+            self.stopId = nil
+            self.coordinates = coordinates
+        }
+        
+        public var queryValue: String {
+            if let stopId = stopId {
+                return stopId
+            } else if let coords = coordinates {
+                return "\(coords.0),\(coords.1)"
+            }
+            return "0,0"
+        }
+    }
+    
+    public init(from: RouteLocation, to: RouteLocation, via: [String]?, viaMinimumStay: [Int], time: Date?, arriveBy: Bool, maxTransfers: Int, minTransferTime: Int, pedestrianProfile: PedestrianProfile, transitModes: [TransportationMode]?, numItineraries: Int?, pageCursor: String?, timetableView: Bool, maxPreTransitTime: Int?, maxPostTransitTime: Int?) {
         self.from = from
         self.to = to
         self.via = via
