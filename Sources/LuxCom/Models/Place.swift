@@ -14,12 +14,13 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
     public let lat: Double
     public let lon: Double
     public let level: Double
+    public let alerts: [Alert]?
     public let arrival: Date?
     public let departure: Date?
     public let scheduledArrival: Date?
     public let scheduledDeparture: Date?
+    public let cancelled: Bool?
     public let scheduledTrack: String?
-    public let alerts: [Alert]?
     public let track: String?
     
     public let vertexType: VertexType
@@ -31,23 +32,24 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
     }
     
     public enum CodingKeys: String, CodingKey {
-        case name, stopId, lat, lon, level, arrival, departure
+        case name, stopId, lat, lon, level, arrival, departure, cancelled
         case scheduledArrival, scheduledDeparture, scheduledTrack
         case track, vertexType, alerts
     }
 
-    public init(name: String, stopId: String?, lat: Double, lon: Double, level: Double, arrival: Date?, departure: Date?, scheduledArrival: Date?, scheduledDeparture: Date?, scheduledTrack: String?, alerts: [Alert]?, track: String?, vertexType: VertexType) {
+    public init(name: String, stopId: String?, lat: Double, lon: Double, level: Double, alerts: [Alert]?, arrival: Date?, departure: Date?, scheduledArrival: Date?, scheduledDeparture: Date?, cancelled: Bool?, scheduledTrack: String?, track: String?, vertexType: VertexType) {
         self.name = name
         self.stopId = stopId
         self.lat = lat
         self.lon = lon
         self.level = level
+        self.alerts = alerts
         self.arrival = arrival
         self.departure = departure
         self.scheduledArrival = scheduledArrival
         self.scheduledDeparture = scheduledDeparture
+        self.cancelled = cancelled
         self.scheduledTrack = scheduledTrack
-        self.alerts = alerts
         self.track = track
         self.vertexType = vertexType
     }
