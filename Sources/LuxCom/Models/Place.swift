@@ -19,6 +19,7 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
     public let scheduledArrival: Date?
     public let scheduledDeparture: Date?
     public let scheduledTrack: String?
+    public let alerts: [Alert]?
     public let track: String?
     
     public let vertexType: VertexType
@@ -32,10 +33,10 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
     public enum CodingKeys: String, CodingKey {
         case name, stopId, lat, lon, level, arrival, departure
         case scheduledArrival, scheduledDeparture, scheduledTrack
-        case track = "track"
-        case vertexType
+        case track, vertexType, alerts
     }
-    public init(name: String, stopId: String?, lat: Double, lon: Double, level: Double, arrival: Date?, departure: Date?, scheduledArrival: Date?, scheduledDeparture: Date?, scheduledTrack: String?, track: String?, vertexType: VertexType) {
+
+    public init(name: String, stopId: String?, lat: Double, lon: Double, level: Double, arrival: Date?, departure: Date?, scheduledArrival: Date?, scheduledDeparture: Date?, scheduledTrack: String?, alerts: [Alert]?, track: String?, vertexType: VertexType) {
         self.name = name
         self.stopId = stopId
         self.lat = lat
@@ -46,6 +47,7 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
         self.scheduledArrival = scheduledArrival
         self.scheduledDeparture = scheduledDeparture
         self.scheduledTrack = scheduledTrack
+        self.alerts = alerts
         self.track = track
         self.vertexType = vertexType
     }
