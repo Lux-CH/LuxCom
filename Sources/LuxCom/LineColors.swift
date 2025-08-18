@@ -44,7 +44,7 @@ public struct LineColors {
             LineColor(line: "23", color: Color(hex: "B82F89")),
             LineColor(line: "25", color: Color(hex: "A05909")),
             LineColor(line: "28", color: Color(hex: "82419E")),
-            LineColor(line: "29", color: Color(hex: "E91E76")),
+            LineColor(line: "29", color: Color(hex: "E91E76"), textColor: Color(hex: "FFE8BC")),
             LineColor(line: "31", color: Color(hex: "00B0A4")),
             LineColor(line: "32", color: Color(hex: "89CBBE"), textColor: .black),
             LineColor(line: "33", color: Color(hex: "00B0A4")),
