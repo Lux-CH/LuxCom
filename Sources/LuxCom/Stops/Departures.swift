@@ -43,5 +43,5 @@ public func getDeparturesForStop(
         queryItems.append(URLQueryItem(name: "pageCursor", value: pageCursor))
     }
     
-    return try await APIClient.fetch(from: "/stoptimes", queryItems: queryItems)
+    return try await APIClient.fetch(from: "/stoptimes", apiVersion: "v4", queryItems: queryItems)
 }
