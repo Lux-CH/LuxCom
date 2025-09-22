@@ -9,5 +9,5 @@ import Foundation
 
 public func getTrip(tripId: String) async throws -> Itinerary {
     let queryItems = [URLQueryItem(name: "tripId", value: tripId)]
-    return try await APIClient.fetch(from: "/trip", apiVersion: "v2", queryItems: queryItems)
+    return try await APIClient.fetch(from: "/trip", apiVersion: "v4", queryItems: queryItems)
 }
