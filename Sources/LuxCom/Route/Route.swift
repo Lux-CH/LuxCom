@@ -50,6 +50,10 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
         queryItems.append(URLQueryItem(name: "numItineraries", value: String(numItineraries)))
     }
     
+    if let speed = options.pedestrianSpeed {
+        queryItems.append(URLQueryItem(name: "pedestrianSpeed", value: String(speed)))
+    }
+    
     if let pageCursor = options.pageCursor {
         queryItems.append(URLQueryItem(name: "pageCursor", value: pageCursor))
     }
@@ -62,5 +66,5 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
         queryItems.append(URLQueryItem(name: "maxPostTransitTime", value: String(maxPostTransitTime)))
     }
     
-    return try await APIClient.fetch(from: "/plan", apiVersion: "v2", queryItems: queryItems)
+    return try await APIClient.fetch(from: "/plan", apiVersion: "v4", queryItems: queryItems)
 }

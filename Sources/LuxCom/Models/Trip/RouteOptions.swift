@@ -14,6 +14,7 @@
 ///   - maxTransfers: The maximum number of allowed transfers during the trip.
 ///   - minTransferTime: The minimum transfer time (in seconds) required between connections.
 ///   - pedestrianProfile: The pedestrian profile for walking segments (walking/wheelchair).
+///   - pedestrianSpeed: Average speed for pedestrian routing in meters per second.
 ///   - useRoutedTransfers: A Boolean indicating whether to use precomputed transfer routes from OSM. Defaults to `false`.
 ///   - detailedTransfers: A Boolean indicating whether to include transfer polylines and step-by-step instructions. Defaults to `true`.
 ///   - transitModes: An optional array of allowed transportation modes (e.g., bus, subway, tram).
@@ -35,6 +36,7 @@ public struct RouteOptions: Sendable {
     public let maxTransfers: Int
     public let minTransferTime: Int
     public let pedestrianProfile: PedestrianProfile
+    public let pedestrianSpeed: Int?
     public let useRoutedTransfers: Bool? = true
     public let maxMatchingDistance: Int? = 250
     public let detailedTransfers: Bool? = true
@@ -69,7 +71,7 @@ public struct RouteOptions: Sendable {
         }
     }
     
-    public init(from: RouteLocation, to: RouteLocation, via: [String]?, viaMinimumStay: [Int], time: Date?, arriveBy: Bool, maxTransfers: Int, minTransferTime: Int, pedestrianProfile: PedestrianProfile, transitModes: [TransportationMode]?, numItineraries: Int?, pageCursor: String?, timetableView: Bool, maxPreTransitTime: Int?, maxPostTransitTime: Int?) {
+    public init(from: RouteLocation, to: RouteLocation, via: [String]?, viaMinimumStay: [Int], time: Date?, arriveBy: Bool, maxTransfers: Int, minTransferTime: Int, pedestrianProfile: PedestrianProfile, pedestrianSpeed: Int?, transitModes: [TransportationMode]?, numItineraries: Int?, pageCursor: String? = nil, timetableView: Bool, maxPreTransitTime: Int?, maxPostTransitTime: Int?) {
         self.from = from
         self.to = to
         self.via = via
@@ -79,6 +81,7 @@ public struct RouteOptions: Sendable {
         self.maxTransfers = maxTransfers
         self.minTransferTime = minTransferTime
         self.pedestrianProfile = pedestrianProfile
+        self.pedestrianSpeed = pedestrianSpeed
         self.transitModes = transitModes
         self.numItineraries = numItineraries
         self.pageCursor = pageCursor
