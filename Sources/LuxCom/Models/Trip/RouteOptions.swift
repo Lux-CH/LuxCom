@@ -36,7 +36,6 @@ public struct RouteOptions: Sendable {
     public let maxTransfers: Int
     public let minTransferTime: Int
     public let pedestrianProfile: PedestrianProfile
-    public let pedestrianSpeed: Double?
     public let useRoutedTransfers: Bool? = true
     public let maxMatchingDistance: Int? = 250
     public let detailedTransfers: Bool? = true
@@ -71,7 +70,7 @@ public struct RouteOptions: Sendable {
         }
     }
     
-    public init(from: RouteLocation, to: RouteLocation, via: [String]?, viaMinimumStay: [Int], time: Date?, arriveBy: Bool, maxTransfers: Int, minTransferTime: Int, pedestrianProfile: PedestrianProfile, pedestrianSpeed: Double?, transitModes: [TransportationMode]?, numItineraries: Int?, pageCursor: String? = nil, timetableView: Bool, maxPreTransitTime: Int?, maxPostTransitTime: Int?) {
+    public init(from: RouteLocation, to: RouteLocation, via: [String]?, viaMinimumStay: [Int], time: Date?, arriveBy: Bool, maxTransfers: Int, minTransferTime: Int, pedestrianProfile: PedestrianProfile, transitModes: [TransportationMode]?, numItineraries: Int?, pageCursor: String? = nil, timetableView: Bool, maxPreTransitTime: Int?, maxPostTransitTime: Int?) {
         self.from = from
         self.to = to
         self.via = via
@@ -81,7 +80,6 @@ public struct RouteOptions: Sendable {
         self.maxTransfers = maxTransfers
         self.minTransferTime = minTransferTime
         self.pedestrianProfile = pedestrianProfile
-        self.pedestrianSpeed = pedestrianSpeed
         self.transitModes = transitModes
         self.numItineraries = numItineraries
         self.pageCursor = pageCursor

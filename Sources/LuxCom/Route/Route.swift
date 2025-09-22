@@ -50,10 +50,6 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
         queryItems.append(URLQueryItem(name: "numItineraries", value: String(numItineraries)))
     }
     
-    if let speed = options.pedestrianSpeed {
-        queryItems.append(URLQueryItem(name: "pedestrianSpeed", value: String(speed)))
-    }
-    
     if let pageCursor = options.pageCursor {
         queryItems.append(URLQueryItem(name: "pageCursor", value: pageCursor))
     }
