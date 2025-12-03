@@ -68,10 +68,22 @@ struct APIClient {
             } catch {
                 throw APIError.decodingFailed(error)
             }
-        } catch {
-            if let apiError = error as? APIError {
-                throw apiError
+        } catch let error as APIError {
+            if case .requestFailed(let statusCode, _) = error,
+               (statusCode == 1033 || statusCode == 502 || statusCode == 503),
+               baseURL != bckpApiUrl {
+                return try await fetch(
+                    from: endpoint,
+                    apiVersion: apiVersion,
+                    queryItems: queryItems,
+                    baseURL: bckpApiUrl,
+                    headers: headers,
+                    method: method,
+                    body: body
+                )
             }
+            throw error
+        } catch {
             throw error
         }
     }

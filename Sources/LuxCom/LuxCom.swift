@@ -8,6 +8,7 @@
 import Foundation
 
 let apiUrl = "https://lux.cclerc.ch/api"
+let bckpApiUrl = "https://api.transitous.org/api"
 let cbURL = "https://crowdback.cclerc.ch"
 let disruptionsUrl = "https://disruptions.cclerc.ch"
 
