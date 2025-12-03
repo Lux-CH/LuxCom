@@ -20,9 +20,7 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
         let stops = try await getMapStops(min: bbox.min, max: bbox.max)
         
         let filteredStops = stops.filter { place in
-            let hasParentInId = place.stopId?.contains("ch_Parent") ?? false
-            let hasNoTrack = place.track == nil
-            return hasParentInId || hasNoTrack
+            place.stopId?.hasPrefix("ch_Parent") ?? false
         }
         
         if !filteredStops.isEmpty {
@@ -35,7 +33,6 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
                 )
                 
                 let score = max(0.0, 1.0 - (distance / radius))
-                print(place.stopId)
                 return SearchResult(
                     type: .stop,
                     tokens: [[]],
