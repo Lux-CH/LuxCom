@@ -70,7 +70,7 @@ struct APIClient {
             }
         } catch let error as APIError {
             if case .requestFailed(let statusCode, _) = error,
-               (statusCode == 1033 || statusCode == 502 || statusCode == 503),
+               (statusCode == 1033 || statusCode == 502 || statusCode == 503 || statusCode == 500),
                baseURL != bckpApiUrl {
                 return try await fetch(
                     from: endpoint,
