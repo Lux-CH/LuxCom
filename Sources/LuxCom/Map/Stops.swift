@@ -20,7 +20,7 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
         let stops = try await getMapStops(min: bbox.min, max: bbox.max)
         
         let filteredStops = stops.filter { place in
-            place.stopId?.hasPrefix("ch_Parent") ?? false
+            place.stopId?.contains("_Parent") ?? false
         }
         
         if !filteredStops.isEmpty {
