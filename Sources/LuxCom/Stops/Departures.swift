@@ -43,7 +43,7 @@ public func getDeparturesForStop(
         queryItems.append(URLQueryItem(name: "pageCursor", value: pageCursor))
     }
     
-    queryItems.append(URLQueryItem(name: "radius", value: "30"))
+    queryItems.append(URLQueryItem(name: "radius", value: "40"))
     queryItems.append(URLQueryItem(name: "exactRadius", value: "true"))
     
     return try await APIClient.fetch(from: "/stoptimes", apiVersion: "v4", queryItems: queryItems)
