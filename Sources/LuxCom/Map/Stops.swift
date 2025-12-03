@@ -35,7 +35,7 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
                 )
                 
                 let score = max(0.0, 1.0 - (distance / radius))
-                
+                print(place.stopId)
                 return SearchResult(
                     type: .stop,
                     tokens: [[]],
