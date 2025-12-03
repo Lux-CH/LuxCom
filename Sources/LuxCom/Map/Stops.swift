@@ -19,8 +19,14 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
         
         let stops = try await getMapStops(min: bbox.min, max: bbox.max)
         
-        if !stops.isEmpty {
-            let results = stops.map { place in
+        let filteredStops = stops.filter { place in
+            let hasParentInId = place.stopId?.contains("ch_Parent") ?? false
+            let hasNoTrack = place.track == nil
+            return hasParentInId || hasNoTrack
+        }
+        
+        if !filteredStops.isEmpty {
+            let results = filteredStops.map { place in
                 let distance = calculateDistance(
                     userLat: currentLoc.0,
                     userLon: currentLoc.1,
