@@ -18,6 +18,9 @@
 ///   - useRoutedTransfers: A Boolean indicating whether to use precomputed transfer routes from OSM. Defaults to `false`.
 ///   - detailedTransfers: A Boolean indicating whether to include transfer polylines and step-by-step instructions. Defaults to `true`.
 ///   - transitModes: An optional array of allowed transportation modes (e.g., bus, subway, tram).
+///   - directModes: Modes for direct connections from start to destination without using transit.
+///   - preTransitModes: Modes allowed from origin to first transit stop (only applies if from is a coordinate).
+///   - postTransitModes: Modes allowed from last transit stop to destination (only applies if to is a coordinate).
 ///   - numItineraries: An optional number specifying the maximum number of route options to return.
 ///   - pageCursor: An optional string for paginating results.
 ///   - timetableView: Defaults to `true`.
