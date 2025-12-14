@@ -46,6 +46,24 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
         }
     }
     
+    if let directModes = options.directModes, !directModes.isEmpty {
+        for mode in directModes {
+            queryItems.append(URLQueryItem(name: "directModes", value: mode.rawValue))
+        }
+    }
+    
+    if let preTransitModes = options.preTransitModes, !preTransitModes.isEmpty {
+        for mode in preTransitModes {
+            queryItems.append(URLQueryItem(name: "preTransitModes", value: mode.rawValue))
+        }
+    }
+    
+    if let postTransitModes = options.postTransitModes, !postTransitModes.isEmpty {
+        for mode in postTransitModes {
+            queryItems.append(URLQueryItem(name: "postTransitModes", value: mode.rawValue))
+        }
+    }
+    
     if let numItineraries = options.numItineraries {
         queryItems.append(URLQueryItem(name: "numItineraries", value: String(numItineraries)))
     }
