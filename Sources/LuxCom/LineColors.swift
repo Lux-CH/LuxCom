@@ -134,7 +134,6 @@ public struct LineColors {
             LineColor(line: "RL4", color: Color(hex: "F8B003")),
             LineColor(line: "RL5", color: Color(hex: "C0096F")),
             LineColor(line: "RL6", color: Color(hex: "019AAA")),
-            LineColor(line: "RL7", color: Color(hex: "27451F")),
             
             // mouettes
             LineColor(line: "M1", color: Color(hex: "0076BA")),
