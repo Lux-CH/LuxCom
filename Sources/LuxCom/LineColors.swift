@@ -166,13 +166,74 @@ public struct LineColors {
         ]
         return Dictionary(uniqueKeysWithValues: colors.map { ($0.line, $0) })
     }()
+    static let tlLinesColor: [String: LineColor] = {
+        var colors = [
+            LineColor(line: "m1", color: Color(hex: "EC008C")),
+            LineColor(line: "m2", color: Color(hex: "EC008C")),
+            LineColor(line: "R20", color: Color(hex: "58B947")),
+            LineColor(line: "N1", color: Color(hex: "df0915")),
+            LineColor(line: "N2", color: Color(hex: "a46e5d")),
+            LineColor(line: "N3", color: Color(hex: "f19203")),
+            LineColor(line: "N4", color: Color(hex: "217a98")),
+            LineColor(line: "N5", color: Color(hex: "8fbf1f")),
+            LineColor(line: "N6", color: Color(hex: "9e456f")),
+            LineColor(line: "1", color: Color(hex: "F2665E")),
+            LineColor(line: "2", color: Color(hex: "FCAF17")),
+            LineColor(line: "3", color: Color(hex: "939598")),
+            LineColor(line: "4", color: Color(hex: "00A651")),
+            LineColor(line: "6", color: Color(hex: "00AEEF")),
+            LineColor(line: "7", color: Color(hex: "2E3192")),
+            LineColor(line: "8", color: Color(hex: "8F53A1")),
+            LineColor(line: "9", color: Color(hex: "B41E8E")),
+            LineColor(line: "13", color: Color(hex: "43978D")),
+            LineColor(line: "16", color: Color(hex: "C1B400")),
+            LineColor(line: "17", color: Color(hex: "ED1C24")),
+            LineColor(line: "18", color: Color(hex: "44C8F5")),
+            LineColor(line: "19", color: Color(hex: "2268b8")),
+            LineColor(line: "20", color: Color(hex: "DE761C")),
+            LineColor(line: "21", color: Color(hex: "C95789")),
+            LineColor(line: "24", color: Color(hex: "91b672")),
+            LineColor(line: "25", color: Color(hex: "4F78A8")),
+            LineColor(line: "31", color: Color(hex: "529DBA")),
+            LineColor(line: "32", color: Color(hex: "9D85BE")),
+            LineColor(line: "33", color: Color(hex: "4C7520")),
+            LineColor(line: "35", color: Color(hex: "FAA22B")),
+            LineColor(line: "36", color: Color(hex: "9CB4BE")),
+            LineColor(line: "38", color: Color(hex: "BB8732")),
+            LineColor(line: "41", color: Color(hex: "B41E8E")),
+            LineColor(line: "42", color: Color(hex: "CB8E96")),
+            LineColor(line: "44", color: Color(hex: "F599B1")),
+            LineColor(line: "45", color: Color(hex: "008C94")),
+            LineColor(line: "46", color: Color(hex: "B49C00")),
+            LineColor(line: "47", color: Color(hex: "CF9C51")),
+            LineColor(line: "48", color: Color(hex: "80A0D3")),
+            LineColor(line: "49", color: Color(hex: "C192C2")),
+            LineColor(line: "54", color: Color(hex: "B9684A")),
+            LineColor(line: "56", color: Color(hex: "0054A6")),
+            LineColor(line: "58", color: Color(hex: "00BAD0")),
+            LineColor(line: "60", color: Color(hex: "8DC63F")),
+            LineColor(line: "64", color: Color(hex: "C1353C")),
+            LineColor(line: "68", color: Color(hex: "605EA9")),
+            LineColor(line: "69", color: Color(hex: "9B95C9")),
+            LineColor(line: "Bus-LEB", color: Color(hex: "5BB134"))
+        ]
+        return Dictionary(uniqueKeysWithValues: colors.map { ($0.line, $0) })
+    }()
     
     public static func color(for line: String) -> Color? {
         return tpgLinesColor[line]?.color
     }
     
+    public static func tlColor(for line: String) -> Color? {
+        return tpgLinesColor[line]?.color
+    }
+    
     public static func textColor(for line: String) -> Color? {
         return tpgLinesColor[line]?.textColor
+    }
+    
+    public static func tlTextColor(for line: String) -> Color? {
+        return tlLinesColor[line]?.textColor
     }
 }
 
