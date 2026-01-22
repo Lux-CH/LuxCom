@@ -215,7 +215,26 @@ public struct LineColors {
             LineColor(line: "64", color: Color(hex: "C1353C")),
             LineColor(line: "68", color: Color(hex: "605EA9")),
             LineColor(line: "69", color: Color(hex: "9B95C9")),
-            LineColor(line: "Bus-LEB", color: Color(hex: "5BB134"))
+            LineColor(line: "Bus-LEB", color: Color(hex: "5BB134")),
+            LineColor(line: "2003", color: Color(hex: "A0A0A0")),
+            LineColor(line: "R56", color: Color(hex: "02B646")),
+            LineColor(line: "R57", color: Color(hex: "006A28")),
+            LineColor(line: "701", color: Color(hex: "004d21")),
+            LineColor(line: "702", color: Color(hex: "f58f00")),
+            LineColor(line: "703", color: Color(hex: "611e83")),
+            LineColor(line: "704", color: Color(hex: "8cbe0d")),
+            LineColor(line: "705", color: Color(hex: "643900")),
+            LineColor(line: "706", color: Color(hex: "decf37")),
+            LineColor(line: "724", color: Color(hex: "ad559c")),
+            LineColor(line: "726", color: Color(hex: "00a2e6")),
+            LineColor(line: "730", color: Color(hex: "888a89")),
+            LineColor(line: "735", color: Color(hex: "e7007c")),
+            LineColor(line: "736", color: Color(hex: "8882bd")),
+            LineColor(line: "740", color: Color(hex: "ec4a11")),
+            LineColor(line: "742", color: Color(hex: "c0101e")),
+            LineColor(line: "750", color: Color(hex: "23328b")),
+            LineColor(line: "752", color: Color(hex: "d781b5")),
+            LineColor(line: "760", color: Color(hex: "009894"))
         ]
         return Dictionary(uniqueKeysWithValues: colors.map { ($0.line, $0) })
     }()
