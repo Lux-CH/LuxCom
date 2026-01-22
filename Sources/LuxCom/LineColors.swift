@@ -244,7 +244,7 @@ public struct LineColors {
     }
     
     public static func tlColor(for line: String) -> Color? {
-        return tpgLinesColor[line]?.color
+        return tlLinesColor[line]?.color
     }
     
     public static func textColor(for line: String) -> Color? {
