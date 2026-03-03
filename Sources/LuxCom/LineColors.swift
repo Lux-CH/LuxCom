@@ -242,7 +242,7 @@ public struct LineColors {
     public static func color(for line: String) -> Color? {
         return tpgLinesColor[line]?.color
     }
-    
+    // the check for agency is directly operated in app as we don't always have agencyID
     public static func tlColor(for line: String) -> Color? {
         return tlLinesColor[line]?.color
     }
