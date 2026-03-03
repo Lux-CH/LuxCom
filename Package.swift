@@ -16,10 +16,6 @@ let package = Package(
         .target(
             name: "LuxCom",
             path: "Sources"
-        ),
-        .testTarget(
-            name: "LuxComTests",
-            dependencies: ["LuxCom"]
-        ),
+        )
     ]
 )
