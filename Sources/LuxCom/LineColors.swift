@@ -239,6 +239,20 @@ public struct LineColors {
         return Dictionary(uniqueKeysWithValues: colors.map { ($0.line, $0) })
     }()
     
+    static let tacLinesColors: [String: LineColor] = {
+        var colors = [
+            LineColor(line: "TANGO",color: Color(hex: "009cdb")),
+            LineColor(line: "3",color: Color(hex: "00a786")),
+            LineColor(line: "4",color: Color(hex: "f7931d"),textColor: .black),
+            LineColor(line: "5",color: Color(hex: "a1318b")),
+            LineColor(line: "6",color: Color(hex: "d6df21"),textColor: .black),
+            LineColor(line: "7",color: Color(hex: "ba7731"),textColor: .black),
+            LineColor(line: "8",color: Color(hex: "e99fc4"),textColor: .black),
+            LineColor(line: "TAD CHAL",color: Color(hex: "388ec8")),
+        ]
+        return Dictionary(uniqueKeysWithValues: colors.map { ($0.line, $0) })
+    }()
+    
     public static func color(for line: String) -> Color? {
         return tpgLinesColor[line]?.color
     }
@@ -247,12 +261,20 @@ public struct LineColors {
         return tlLinesColor[line]?.color
     }
     
+    public static func tacColors(for line: String) -> Color? {
+        return tacLinesColors[line]?.color
+    }
+    
     public static func textColor(for line: String) -> Color? {
         return tpgLinesColor[line]?.textColor
     }
     
     public static func tlTextColor(for line: String) -> Color? {
         return tlLinesColor[line]?.textColor
+    }
+    
+    public static func tacTextColor(for line: String) -> Color? {
+        return tacLinesColors[line]?.textColor
     }
 }
 
