@@ -25,12 +25,4 @@ public struct StopTime: Codable, Sendable, Identifiable, Hashable {
         self.agencyId = agencyId
         self.cancelled = cancelled
     }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(tripId)
-    }
-    
-    public static func == (lhs: StopTime, rhs: StopTime) -> Bool {
-        return lhs.tripId == rhs.tripId
-    }
 }
