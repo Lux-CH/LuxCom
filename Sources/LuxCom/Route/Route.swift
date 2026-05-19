@@ -16,7 +16,7 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
         URLQueryItem(name: "toPlace", value: options.to.queryValue),
         URLQueryItem(name: "arriveBy", value: String(options.arriveBy)),
         URLQueryItem(name: "maxTransfers", value: String(options.maxTransfers)),
-        URLQueryItem(name: "minTransferTime", value: String(options.minTransferTime)),
+        URLQueryItem(name: "additionalTransferTime", value: String(options.minTransferTime)),
         URLQueryItem(name: "pedestrianProfile", value: options.pedestrianProfile.rawValue),
         URLQueryItem(name: "useRoutedTransfers", value: String(options.useRoutedTransfers ?? true)),
         URLQueryItem(name: "maxMatchingDistance", value: String(options.maxMatchingDistance ?? 250)),
