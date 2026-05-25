@@ -16,7 +16,7 @@ public enum APIError: Error {
 private let sharedSession: URLSession = {
     let config = URLSessionConfiguration.default
     config.timeoutIntervalForRequest = 5
-    config.timeoutIntervalForResource = 7
+    config.timeoutIntervalForResource = 15
     return URLSession(configuration: config)
 }()
 
