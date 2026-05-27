@@ -25,7 +25,9 @@ public struct Leg: Codable, Sendable {
     public let agencyId: String?
     public let tripId: String?
     public let steps: [StepInstruction]?
-    public init(mode: TransportationMode, from: Place, to: Place, duration: Int, startTime: Date, endTime: Date, scheduledStartTime: Date, scheduledEndTime: Date, realTime: Bool, distance: Double?, headsign: String?, routeShortName: String?, intermediateStops: [Place]?, legGeometry: LegGeometry, agencyId: String?, tripId: String?, steps: [StepInstruction]?) {
+    public let interlineWithPreviousLeg: Bool?
+    public let alternatives: [[Leg]]?
+    public init(mode: TransportationMode, from: Place, to: Place, duration: Int, startTime: Date, endTime: Date, scheduledStartTime: Date, scheduledEndTime: Date, realTime: Bool, distance: Double?, headsign: String?, routeShortName: String?, intermediateStops: [Place]?, legGeometry: LegGeometry, agencyId: String?, tripId: String?, steps: [StepInstruction]?, interlineWithPreviousLeg: Bool? = nil, alternatives: [[Leg]]? = nil) {
         self.mode = mode
         self.from = from
         self.to = to
@@ -43,5 +45,7 @@ public struct Leg: Codable, Sendable {
         self.agencyId = agencyId
         self.tripId = tripId
         self.steps = steps
+        self.interlineWithPreviousLeg = interlineWithPreviousLeg
+        self.alternatives = alternatives
     }
 }

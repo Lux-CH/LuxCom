@@ -46,6 +46,7 @@ public struct RouteOptions: Sendable {
     public let timetableView: Bool
     public let maxPreTransitTime: Int?
     public let maxPostTransitTime: Int?
+    public let numLegAlternatives: Int?
     
     public struct RouteLocation: Sendable {
         public let stopId: String?
@@ -71,7 +72,7 @@ public struct RouteOptions: Sendable {
         }
     }
     
-    public init(from: RouteLocation, to: RouteLocation, via: [String]?, viaMinimumStay: [Int], time: Date?, arriveBy: Bool, maxTransfers: Int, minTransferTime: Int, pedestrianProfile: PedestrianProfile, pedestrianSpeed: Double?, transitModes: [TransportationMode]?, numItineraries: Int?, pageCursor: String? = nil, timetableView: Bool, maxPreTransitTime: Int?, maxPostTransitTime: Int?) {
+    public init(from: RouteLocation, to: RouteLocation, via: [String]?, viaMinimumStay: [Int], time: Date?, arriveBy: Bool, maxTransfers: Int, minTransferTime: Int, pedestrianProfile: PedestrianProfile, pedestrianSpeed: Double?, transitModes: [TransportationMode]?, numItineraries: Int?, pageCursor: String? = nil, timetableView: Bool, maxPreTransitTime: Int?, maxPostTransitTime: Int?, numLegAlternatives: Int? = nil) {
         self.from = from
         self.to = to
         self.via = via
@@ -88,5 +89,6 @@ public struct RouteOptions: Sendable {
         self.timetableView = timetableView
         self.maxPreTransitTime = maxPreTransitTime
         self.maxPostTransitTime = maxPostTransitTime
+        self.numLegAlternatives = numLegAlternatives
     }
 }
