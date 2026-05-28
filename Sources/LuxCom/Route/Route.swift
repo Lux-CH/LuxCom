@@ -21,7 +21,8 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
         URLQueryItem(name: "useRoutedTransfers", value: String(options.useRoutedTransfers ?? true)),
         URLQueryItem(name: "maxMatchingDistance", value: String(options.maxMatchingDistance ?? 250)),
         URLQueryItem(name: "detailedTransfers", value: String(options.detailedTransfers ?? true)),
-        URLQueryItem(name: "timetableView", value: String(options.timetableView))
+        URLQueryItem(name: "timetableView", value: String(options.timetableView)),
+        URLQueryItem(name: "fastestDirectFactor", value: "1.5")
     ]
     
     if let time = options.time {
