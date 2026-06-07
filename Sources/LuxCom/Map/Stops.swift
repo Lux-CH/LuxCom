@@ -19,26 +19,30 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
         
         let stops = try await getMapStops(min: bbox.min, max: bbox.max)
         
-        let filteredStops = stops.filter { place in
-            guard let stopId = place.stopId else { return false }
-            return stopId.hasPrefix("ch_Parent") || stopId.hasPrefix("ch-opentransportdataswiss26_Parent")
+        var seen = Set<String>()
+        var uniqueStops: [Place] = []
+        for place in stops {
+            let id = place.parentId ?? place.stopId ?? ""
+            if !id.isEmpty && seen.insert(id).inserted {
+                uniqueStops.append(place)
+            }
         }
-        
-        if !filteredStops.isEmpty {
-            let results = filteredStops.map { place in
+
+        if !uniqueStops.isEmpty {
+            let results = uniqueStops.map { place in
                 let distance = calculateDistance(
                     userLat: currentLoc.0,
                     userLon: currentLoc.1,
                     stopLat: place.lat,
                     stopLon: place.lon
                 )
-                
+
                 let score = max(0.0, 1.0 - (distance / radius))
                 return SearchResult(
                     type: .stop,
                     tokens: [[]],
                     name: place.name,
-                    id: place.stopId ?? "",
+                    id: place.parentId ?? place.stopId ?? "",
                     lat: place.lat,
                     lon: place.lon,
                     level: place.level,
@@ -50,7 +54,7 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
                 )
             }
             .sorted { $0.score > $1.score }
-            
+
             return results
         }
         
