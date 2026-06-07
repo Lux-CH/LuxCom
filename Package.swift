@@ -6,7 +6,7 @@ import PackageDescription
 
 let package = Package(
     name: "LuxCom",
-    platforms: [.iOS(.v17), .macOS(.v14), .watchOS(.v10), .tvOS(.v17)],
+    platforms: [.iOS(.v16), .macOS(.v14), .watchOS(.v9), .tvOS(.v16)],
     products: [
         .library(
             name: "LuxCom",
