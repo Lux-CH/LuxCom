@@ -13,6 +13,10 @@ public enum APIError: Error {
     case decodingFailed(Error)
 }
 
+private enum ConnectionError: Error {
+    case underlying(Error)
+}
+
 private let sharedSession: URLSession = {
     let config = URLSessionConfiguration.default
     config.timeoutIntervalForRequest = 5
@@ -78,7 +82,7 @@ struct APIClient {
                 body: body
             )
         } catch {
-            if usePrimary {
+            if usePrimary && Self.isConnectionError(error) {
                 print("Primary server failed, switching to backup")
                 await state.markPrimaryDown()
                 return try await performRequest(
@@ -127,7 +131,13 @@ struct APIClient {
             request.httpBody = body
         }
         
-        let (data, response) = try await sharedSession.data(for: request)
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await sharedSession.data(for: request)
+        } catch {
+            throw ConnectionError.underlying(error)
+        }
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.requestFailed(statusCode: 0, description: "Invalid Response")
@@ -148,5 +158,9 @@ struct APIClient {
         } catch {
             throw APIError.decodingFailed(error)
         }
+    }
+
+    private static func isConnectionError(_ error: Error) -> Bool {
+        return error is ConnectionError
     }
 }
