@@ -51,21 +51,27 @@ public struct RouteOptions: Sendable {
     public struct RouteLocation: Sendable {
         public let stopId: String?
         public let coordinates: (Double, Double)?
+        public let level: Double?
         
         public init(stopId: String) {
             self.stopId = stopId
             self.coordinates = nil
+            self.level = nil
         }
         
-        public init(coordinates: (Double, Double)) {
+        public init(coordinates: (Double, Double), level: Double? = nil) {
             self.stopId = nil
             self.coordinates = coordinates
+            self.level = level
         }
         
         public var queryValue: String {
             if let stopId = stopId {
                 return stopId
             } else if let coords = coordinates {
+                if let level = level {
+                    return "\(coords.0),\(coords.1),\(level)"
+                }
                 return "\(coords.0),\(coords.1)"
             }
             return "0,0"
