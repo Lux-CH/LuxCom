@@ -11,15 +11,17 @@ public struct InfoResponse: Decodable, Sendable {
         public let trustLevel: Double
         public let reportCount: Int
         public let totalWeight: Double
+        public let projection: Double?
+        public let source: String?
     }
-    
+
     public struct RealtimeInfo: Decodable, Sendable {
         public let level: Int
         public let trustLevel: Int
         public let timestamp: Int64
         public let distance: Double
     }
-    
+
     public let average: [String: AttributeInfo]
     public let rt: [String: RealtimeInfo]?
 }
