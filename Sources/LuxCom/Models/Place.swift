@@ -10,6 +10,7 @@ import Foundation
 public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
     public var name: String
     public let stopId: String?
+    public let parentId: String?
     public var id: String { stopId ?? UUID().uuidString }
     public let lat: Double
     public let lon: Double
@@ -30,14 +31,15 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
     }
     
     public enum CodingKeys: String, CodingKey {
-        case name, stopId, lat, lon, level, arrival, departure
+        case name, stopId, parentId, lat, lon, level, arrival, departure
         case scheduledArrival, scheduledDeparture, scheduledTrack
         case track = "track"
         case vertexType
     }
-    public init(name: String, stopId: String?, lat: Double, lon: Double, level: Double, arrival: Date?, departure: Date?, scheduledArrival: Date?, scheduledDeparture: Date?, scheduledTrack: String?, track: String?, vertexType: VertexType) {
+    public init(name: String, stopId: String?, parentId: String? = nil, lat: Double, lon: Double, level: Double, arrival: Date?, departure: Date?, scheduledArrival: Date?, scheduledDeparture: Date?, scheduledTrack: String?, track: String?, vertexType: VertexType) {
         self.name = name
         self.stopId = stopId
+        self.parentId = parentId
         self.lat = lat
         self.lon = lon
         self.level = level
