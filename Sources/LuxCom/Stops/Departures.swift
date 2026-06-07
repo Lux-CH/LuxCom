@@ -11,7 +11,7 @@ public func getDeparturesForStop(
     stopId: String,
     time: Date = Date(),
     arriveBy: Bool = false,
-    eventType: String? = nil,
+    both: Bool = false,
     direction: String? = nil,
     mode: [String]? = ["TRANSIT"],
     numberOfEvents: Int,
@@ -28,8 +28,8 @@ public func getDeparturesForStop(
         URLQueryItem(name: "n", value: String(numberOfEvents))
     ]
 
-    if let eventType = eventType {
-        queryItems.append(URLQueryItem(name: "eventType", value: eventType))
+    if both {
+        queryItems.append(URLQueryItem(name: "both", value: "true"))
     }
     
     if let direction = direction {
