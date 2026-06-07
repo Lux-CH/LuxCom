@@ -21,6 +21,9 @@ private let sharedSession: URLSession = {
     let config = URLSessionConfiguration.default
     config.timeoutIntervalForRequest = 5
     config.timeoutIntervalForResource = 15
+    if #available(iOS 17.0, *) {
+        config.assumesHTTP3Capable = false
+    }
     return URLSession(configuration: config)
 }()
 
