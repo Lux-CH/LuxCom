@@ -21,9 +21,6 @@ private let sharedSession: URLSession = {
     let config = URLSessionConfiguration.default
     config.timeoutIntervalForRequest = 5
     config.timeoutIntervalForResource = 15
-    if #available(iOS 17.0, *) {
-        config.assumesHTTP3Capable = false
-    }
     return URLSession(configuration: config)
 }()
 
@@ -125,6 +122,7 @@ struct APIClient {
         
         var request = URLRequest(url: url)
         request.httpMethod = method
+        request.assumesHTTP3Capable = false
         
         for (key, value) in headers {
             request.addValue(value, forHTTPHeaderField: key)
