@@ -136,6 +136,10 @@ struct APIClient {
         let response: URLResponse
         do {
             (data, response) = try await sharedSession.data(for: request)
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch let urlError as URLError where urlError.code == .cancelled {
+            throw CancellationError()
         } catch {
             throw ConnectionError.underlying(error)
         }
