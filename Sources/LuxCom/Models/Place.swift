@@ -51,4 +51,21 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
         self.track = track
         self.vertexType = vertexType
     }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        stopId = try container.decodeIfPresent(String.self, forKey: .stopId)
+        parentId = try container.decodeIfPresent(String.self, forKey: .parentId)
+        lat = try container.decode(Double.self, forKey: .lat)
+        lon = try container.decode(Double.self, forKey: .lon)
+        level = try container.decodeIfPresent(Double.self, forKey: .level) ?? 0
+        arrival = try container.decodeIfPresent(Date.self, forKey: .arrival)
+        departure = try container.decodeIfPresent(Date.self, forKey: .departure)
+        scheduledArrival = try container.decodeIfPresent(Date.self, forKey: .scheduledArrival)
+        scheduledDeparture = try container.decodeIfPresent(Date.self, forKey: .scheduledDeparture)
+        scheduledTrack = try container.decodeIfPresent(String.self, forKey: .scheduledTrack)
+        track = try container.decodeIfPresent(String.self, forKey: .track)
+        vertexType = try container.decode(VertexType.self, forKey: .vertexType)
+    }
 }
