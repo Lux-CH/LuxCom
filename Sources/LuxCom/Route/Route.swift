@@ -7,10 +7,15 @@
 
 import Foundation
 
+nonisolated(unsafe) private let routeDateFormatter: ISO8601DateFormatter = {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [.withInternetDateTime]
+    return formatter
+}()
+
 public func getRoute(_ options: RouteOptions) async throws -> Trip {
-    let dateFormatter = ISO8601DateFormatter()
-    dateFormatter.formatOptions = [.withInternetDateTime]
-    
+    let dateFormatter = routeDateFormatter
+
     var queryItems = [
         URLQueryItem(name: "fromPlace", value: options.from.queryValue),
         URLQueryItem(name: "toPlace", value: options.to.queryValue),

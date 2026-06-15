@@ -7,6 +7,13 @@
 
 import Foundation
 
+// Built once instead of per-call: getDeparturesForStop runs on a 5s polling loop.
+nonisolated(unsafe) private let departuresDateFormatter: ISO8601DateFormatter = {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [.withInternetDateTime]
+    return formatter
+}()
+
 public func getDeparturesForStop(
     stopId: String,
     time: Date = Date(),
@@ -18,9 +25,8 @@ public func getDeparturesForStop(
     radius: Int? = nil,
     pageCursor: String? = nil
 ) async throws -> StopTimes {
-    let dateFormatter = ISO8601DateFormatter()
-    dateFormatter.formatOptions = [.withInternetDateTime]
-    
+    let dateFormatter = departuresDateFormatter
+
     var queryItems = [
         URLQueryItem(name: "stopId", value: stopId),
         URLQueryItem(name: "time", value: dateFormatter.string(from: time)),
