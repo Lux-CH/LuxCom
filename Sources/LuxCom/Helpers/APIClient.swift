@@ -24,6 +24,15 @@ private let sharedSession: URLSession = {
     return URLSession(configuration: config)
 }()
 
+// Reused across every request: constructing a JSONDecoder per call is wasteful
+// on the hot polling paths (departures every 5s, trip refresh every 10s). The
+// decoder is only read concurrently (never reconfigured), which is safe.
+private let sharedDecoder: JSONDecoder = {
+    let decoder = JSONDecoder()
+    decoder.dateDecodingStrategy = .iso8601
+    return decoder
+}()
+
 actor APIState {
     static let shared = APIState()
     
@@ -155,11 +164,8 @@ struct APIClient {
             )
         }
         
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        
         do {
-            return try decoder.decode(T.self, from: data)
+            return try sharedDecoder.decode(T.self, from: data)
         } catch {
             throw APIError.decodingFailed(error)
         }
