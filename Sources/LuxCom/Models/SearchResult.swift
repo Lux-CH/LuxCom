@@ -20,7 +20,9 @@ public struct SearchResult: Codable, Identifiable, Sendable {
     public let zip: String?
     public let areas: [Area]
     public let score: Double
-    
+    public let openStatus: String?
+    public let isCurrentlyOpen: Bool?
+
     public struct Area: Codable, Sendable {
         public let name: String
         public let adminLevel: Int
@@ -54,7 +56,9 @@ public struct SearchResult: Codable, Identifiable, Sendable {
         houseNumber: String? = nil,
         zip: String? = nil,
         areas: [Area],
-        score: Double
+        score: Double,
+        openStatus: String? = nil,
+        isCurrentlyOpen: Bool? = nil
     ) {
         self.type = type
         self.tokens = tokens
@@ -68,5 +72,7 @@ public struct SearchResult: Codable, Identifiable, Sendable {
         self.zip = zip
         self.areas = areas
         self.score = score
+        self.openStatus = openStatus
+        self.isCurrentlyOpen = isCurrentlyOpen
     }
 }
