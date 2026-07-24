@@ -30,8 +30,10 @@ public struct StopTimes: Codable, Sendable, Equatable {
     ///
     /// Classification uses each departure's own `mode` (not the aggregated
     /// `place.modes`, which footpath-linking pollutes). `stopId` is the opened
-    /// station id (a parent station); `lat`/`lon` its coordinates.
-    public func filteredToStation(stopId: String, lat: Double, lon: Double) -> StopTimes {
+    /// station id (a parent station); `lat`/`lon` its coordinates, used only to
+    /// pick the nearest neighbour in the rail-home direction — when omitted,
+    /// all local neighbours are kept in that (rarer) case.
+    public func filteredToStation(stopId: String, lat: Double? = nil, lon: Double? = nil) -> StopTimes {
         func isHome(_ st: StopTime) -> Bool {
             st.place.parentId == stopId || st.place.stopId == stopId
         }
@@ -50,14 +52,19 @@ public struct StopTimes: Codable, Sendable, Equatable {
             // Local station: keep only the adjacent rail departures.
             keptExtras = extras.filter { $0.mode.isRail }
         } else {
-            // Rail station: keep only local departures, and only from the
-            // single nearest neighbouring station.
+            // Rail station: keep only local departures, and — when we know the
+            // opened stop's coordinates — only from the single nearest
+            // neighbouring station.
             let localExtras = extras.filter { !$0.mode.isRail }
-            let nearestStation = localExtras.min {
-                Self.squaredDistance($0.place, lat: lat, lon: lon)
-                    < Self.squaredDistance($1.place, lat: lat, lon: lon)
-            }.map { $0.place.parentId ?? $0.place.stopId }
-            keptExtras = localExtras.filter { ($0.place.parentId ?? $0.place.stopId) == nearestStation }
+            if let lat, let lon {
+                let nearestStation = localExtras.min {
+                    Self.squaredDistance($0.place, lat: lat, lon: lon)
+                        < Self.squaredDistance($1.place, lat: lat, lon: lon)
+                }.map { $0.place.parentId ?? $0.place.stopId }
+                keptExtras = localExtras.filter { ($0.place.parentId ?? $0.place.stopId) == nearestStation }
+            } else {
+                keptExtras = localExtras
+            }
         }
 
         return StopTimes(
