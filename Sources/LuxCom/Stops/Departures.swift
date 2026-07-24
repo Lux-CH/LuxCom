@@ -47,7 +47,7 @@ public func getDeparturesForStop(
     }
     
     if let radius = radius {
-        queryItems.append(URLQueryItem(name: "exactRadius", value: "false"))
+        queryItems.append(URLQueryItem(name: "exactRadius", value: "true"))
         queryItems.append(URLQueryItem(name: "radius", value: String(radius)))
     }
     
