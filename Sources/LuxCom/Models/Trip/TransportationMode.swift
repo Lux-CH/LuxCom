@@ -26,12 +26,18 @@ public enum TransportationMode: String, Codable, Hashable, Sendable {
     case nightRail = "NIGHT_RAIL"
     case regionalFastRail = "REGIONAL_FAST_RAIL"
     case regionalRail = "REGIONAL_RAIL"
+    case suburban = "SUBURBAN"
     case other = "OTHER"
+
+    public init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = TransportationMode(rawValue: raw) ?? .other
+    }
 
     public var isRail: Bool {
         switch self {
         case .rail, .highSpeedRail, .longDistance, .nightRail,
-             .regionalFastRail, .regionalRail, .metro, .subway:
+             .regionalFastRail, .regionalRail, .suburban, .metro, .subway:
             return true
         default:
             return false
