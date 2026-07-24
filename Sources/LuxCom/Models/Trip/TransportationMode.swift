@@ -28,9 +28,6 @@ public enum TransportationMode: String, Codable, Hashable, Sendable {
     case regionalRail = "REGIONAL_RAIL"
     case other = "OTHER"
 
-    /// Rail-class modes (trains + metro/subway), as opposed to local surface
-    /// transit (tram/bus/coach). Used to pair a train station with its
-    /// co-located local-transit stop when merging nearby stops via `radius`.
     public var isRail: Bool {
         switch self {
         case .rail, .highSpeedRail, .longDistance, .nightRail,
