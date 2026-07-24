@@ -50,7 +50,8 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
                     houseNumber: nil,
                     zip: nil,
                     areas: [],
-                    score: score
+                    score: score,
+                    modes: place.modes
                 )
             }
             .sorted { $0.score > $1.score }

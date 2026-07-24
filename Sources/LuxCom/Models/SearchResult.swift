@@ -20,7 +20,14 @@ public struct SearchResult: Codable, Identifiable, Sendable {
     public let zip: String?
     public let areas: [Area]
     public let score: Double
-    
+    public var modes: [TransportationMode] = []
+
+    public var servesRail: Bool { modes.contains { $0.isRail } }
+
+    public enum CodingKeys: String, CodingKey {
+        case type, tokens, name, id, lat, lon, level, street, houseNumber, zip, areas, score
+    }
+
     public struct Area: Codable, Sendable {
         public let name: String
         public let adminLevel: Int
@@ -54,8 +61,10 @@ public struct SearchResult: Codable, Identifiable, Sendable {
         houseNumber: String? = nil,
         zip: String? = nil,
         areas: [Area],
-        score: Double
+        score: Double,
+        modes: [TransportationMode] = []
     ) {
+        self.modes = modes
         self.type = type
         self.tokens = tokens
         self.name = name
