@@ -27,6 +27,7 @@ public enum TransportationMode: String, Codable, Hashable, Sendable {
     case regionalFastRail = "REGIONAL_FAST_RAIL"
     case regionalRail = "REGIONAL_RAIL"
     case suburban = "SUBURBAN"
+    case funicular = "FUNICULAR"
     case other = "OTHER"
 
     public init(from decoder: Decoder) throws {
@@ -37,7 +38,7 @@ public enum TransportationMode: String, Codable, Hashable, Sendable {
     public var isRail: Bool {
         switch self {
         case .rail, .highSpeedRail, .longDistance, .nightRail,
-             .regionalFastRail, .regionalRail, .suburban, .metro, .subway:
+             .regionalFastRail, .regionalRail, .suburban, .funicular, .metro, .subway:
             return true
         default:
             return false

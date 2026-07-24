@@ -18,7 +18,7 @@ public struct StopTimes: Codable, Sendable, Equatable {
         self.nextPageCursor = nextPageCursor
     }
 
-    public func filteredToStation(stopId: String, lat: Double? = nil, lon: Double? = nil) -> StopTimes {
+    public func filteredToStation(stopId: String, lat: Double? = nil, lon: Double? = nil, servesRail: Bool = false) -> StopTimes {
         func isHome(_ st: StopTime) -> Bool {
             st.place.parentId == stopId || st.place.stopId == stopId
         }
@@ -27,7 +27,7 @@ public struct StopTimes: Codable, Sendable, Equatable {
         let extras = stopTimes.filter { !isHome($0) }
         guard !extras.isEmpty, !home.isEmpty else { return self }
 
-        let homeServesRail = home.contains { $0.mode.isRail }
+        let homeServesRail = servesRail || home.contains { $0.mode.isRail }
         let keepExtra: (StopTime) -> Bool
 
         if !homeServesRail {
