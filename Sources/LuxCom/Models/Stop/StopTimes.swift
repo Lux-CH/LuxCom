@@ -34,7 +34,12 @@ public struct StopTimes: Codable, Sendable, Equatable {
             keepExtra = { $0.mode.isRail }
         } else {
             let localExtras = extras.filter { !$0.mode.isRail }
-            if let lat, let lon {
+            let forecourtIds = Set(localExtras
+                .filter { Self.isStationForecourt($0.place.name) }
+                .map { $0.place.parentId ?? $0.place.stopId })
+            if !forecourtIds.isEmpty {
+                keepExtra = { !$0.mode.isRail && forecourtIds.contains($0.place.parentId ?? $0.place.stopId) }
+            } else if let lat, let lon {
                 let nearestStation = localExtras.min {
                     Self.squaredDistance($0.place, lat: lat, lon: lon)
                         < Self.squaredDistance($1.place, lat: lat, lon: lon)
@@ -50,6 +55,11 @@ public struct StopTimes: Codable, Sendable, Equatable {
             previousPageCursor: previousPageCursor,
             nextPageCursor: nextPageCursor
         )
+    }
+
+    private static func isStationForecourt(_ name: String) -> Bool {
+        let n = name.lowercased()
+        return n.contains("gare") || n.contains("bahnhof") || n.contains("stazione")
     }
 
     private static func squaredDistance(_ place: Place, lat: Double, lon: Double) -> Double {
