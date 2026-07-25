@@ -21,6 +21,8 @@ public struct SearchResult: Codable, Identifiable, Sendable {
     public let areas: [Area]
     public let score: Double
     public var modes: [TransportationMode] = []
+    public var groupedStopIds: [String] = []
+    public var hasRailNeighbour: Bool?
 
     public var servesRail: Bool { modes.contains { $0.isRail } }
 
@@ -79,9 +81,13 @@ public struct SearchResult: Codable, Identifiable, Sendable {
         zip: String? = nil,
         areas: [Area],
         score: Double,
-        modes: [TransportationMode] = []
+        modes: [TransportationMode] = [],
+        groupedStopIds: [String] = [],
+        hasRailNeighbour: Bool? = nil
     ) {
         self.modes = modes
+        self.groupedStopIds = groupedStopIds
+        self.hasRailNeighbour = hasRailNeighbour
         self.type = type
         self.tokens = tokens
         self.name = name
