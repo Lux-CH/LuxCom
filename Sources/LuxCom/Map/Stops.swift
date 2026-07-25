@@ -39,11 +39,9 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
         if !groups.isEmpty {
             let results = groups.compactMap { group -> SearchResult? in
                 let distances = group.map {
-                    calculateDistance(
-                        userLat: currentLoc.0,
-                        userLon: currentLoc.1,
-                        stopLat: $0.lat,
-                        stopLon: $0.lon
+                    StopGrouping.distance(
+                        lat1: currentLoc.0, lon1: currentLoc.1,
+                        lat2: $0.lat, lon2: $0.lon
                     )
                 }
                 guard let nearest = distances.indices.min(by: { distances[$0] < distances[$1] }) else {
@@ -91,12 +89,13 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
 
 func groupPlacesByStop(_ places: [Place]) -> [[Place]] {
     var groups: [[Place]] = []
-    var names: [String] = []
+    var groupsByName: [String: [Int]] = [:]
 
     for place in places {
         let name = StopGrouping.normalizedName(place.name)
-        let match = groups.indices.first { index in
-            names[index] == name && groups[index].contains { member in
+        let candidates = groupsByName[name] ?? []
+        let match = candidates.first { index in
+            groups[index].contains { member in
                 StopGrouping.distance(
                     lat1: member.lat, lon1: member.lon,
                     lat2: place.lat, lon2: place.lon
@@ -107,8 +106,8 @@ func groupPlacesByStop(_ places: [Place]) -> [[Place]] {
         if let match {
             groups[match].append(place)
         } else {
+            groupsByName[name, default: []].append(groups.count)
             groups.append([place])
-            names.append(name)
         }
     }
 
