@@ -23,7 +23,7 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
     public let track: String?
     
     public let vertexType: VertexType
-    public let modes: [TransportationMode]
+    public var modes: [TransportationMode]
 
     public enum VertexType: String, Codable, Sendable {
         case normal = "NORMAL"

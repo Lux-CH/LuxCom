@@ -19,11 +19,17 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
         
         let stops = try await getMapStops(min: bbox.min, max: bbox.max)
         
-        var seen = Set<String>()
+        var seen: [String: Int] = [:]
         var uniqueStops: [Place] = []
         for place in stops {
             let id = place.parentId ?? place.stopId ?? ""
-            if !id.isEmpty && seen.insert(id).inserted {
+            guard !id.isEmpty else { continue }
+            if let index = seen[id] {
+                for mode in place.modes where !uniqueStops[index].modes.contains(mode) {
+                    uniqueStops[index].modes.append(mode)
+                }
+            } else {
+                seen[id] = uniqueStops.count
                 uniqueStops.append(place)
             }
         }
