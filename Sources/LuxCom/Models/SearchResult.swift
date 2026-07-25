@@ -25,7 +25,24 @@ public struct SearchResult: Codable, Identifiable, Sendable {
     public var servesRail: Bool { modes.contains { $0.isRail } }
 
     public enum CodingKeys: String, CodingKey {
-        case type, tokens, name, id, lat, lon, level, street, houseNumber, zip, areas, score
+        case type, tokens, name, id, lat, lon, level, street, houseNumber, zip, areas, score, modes
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        type = try container.decode(LocationType.self, forKey: .type)
+        tokens = try container.decode([[Int]].self, forKey: .tokens)
+        name = try container.decode(String.self, forKey: .name)
+        id = try container.decode(String.self, forKey: .id)
+        lat = try container.decode(Double.self, forKey: .lat)
+        lon = try container.decode(Double.self, forKey: .lon)
+        level = try container.decodeIfPresent(Double.self, forKey: .level)
+        street = try container.decodeIfPresent(String.self, forKey: .street)
+        houseNumber = try container.decodeIfPresent(String.self, forKey: .houseNumber)
+        zip = try container.decodeIfPresent(String.self, forKey: .zip)
+        areas = try container.decodeIfPresent([Area].self, forKey: .areas) ?? []
+        score = try container.decode(Double.self, forKey: .score)
+        modes = try container.decodeIfPresent([TransportationMode].self, forKey: .modes) ?? []
     }
 
     public struct Area: Codable, Sendable {
