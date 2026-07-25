@@ -19,20 +19,26 @@ public struct StopTimes: Codable, Sendable, Equatable {
     }
 
     public func filteredToStation(stopId: String, name: String? = nil, lat: Double? = nil, lon: Double? = nil, servesRail: Bool = false) -> StopTimes {
+        let targetName = name.map(StopGrouping.normalizedName)
+
         func isHome(_ st: StopTime) -> Bool {
             if st.place.parentId == stopId || st.place.stopId == stopId {
                 return true
             }
 
-            guard let name, let lat, let lon else { return false }
+            guard let targetName, let lat, let lon else { return false }
             return StopGrouping.isSameStop(
                 name: st.place.name, lat: st.place.lat, lon: st.place.lon,
-                asName: name, lat: lat, lon: lon
+                asNormalizedName: targetName, lat: lat, lon: lon
             )
         }
 
-        let home = stopTimes.filter(isHome)
-        let extras = stopTimes.filter { !isHome($0) }
+        let homeFlags = stopTimes.map(isHome)
+        var home: [StopTime] = []
+        var extras: [StopTime] = []
+        for (stopTime, isHome) in zip(stopTimes, homeFlags) {
+            if isHome { home.append(stopTime) } else { extras.append(stopTime) }
+        }
         guard !extras.isEmpty, !home.isEmpty else { return self }
 
         let homeServesRail = servesRail || home.contains { $0.mode.isRail }
@@ -59,7 +65,9 @@ public struct StopTimes: Codable, Sendable, Equatable {
         }
 
         return StopTimes(
-            stopTimes: stopTimes.filter { isHome($0) || keepExtra($0) },
+            stopTimes: zip(stopTimes, homeFlags).compactMap { stopTime, isHome in
+                isHome || keepExtra(stopTime) ? stopTime : nil
+            },
             previousPageCursor: previousPageCursor,
             nextPageCursor: nextPageCursor
         )
