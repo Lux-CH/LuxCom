@@ -28,30 +28,49 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
             }
         }
 
-        if !uniqueStops.isEmpty {
-            let results = uniqueStops.map { place in
-                let distance = calculateDistance(
-                    userLat: currentLoc.0,
-                    userLon: currentLoc.1,
-                    stopLat: place.lat,
-                    stopLon: place.lon
-                )
+        let groups = groupPlacesByStop(uniqueStops)
 
-                let score = max(0.0, 1.0 - (distance / radius))
+        if !groups.isEmpty {
+            let results = groups.compactMap { group -> SearchResult? in
+                let distances = group.map {
+                    calculateDistance(
+                        userLat: currentLoc.0,
+                        userLon: currentLoc.1,
+                        stopLat: $0.lat,
+                        stopLon: $0.lon
+                    )
+                }
+                guard let nearest = distances.indices.min(by: { distances[$0] < distances[$1] }) else {
+                    return nil
+                }
+
+                let identifying = group.first { $0.parentId != nil } ?? group[nearest]
+                guard let id = identifying.parentId ?? identifying.stopId, !id.isEmpty else {
+                    return nil
+                }
+
+                var modes: [TransportationMode] = []
+                for place in group {
+                    for mode in place.modes where !modes.contains(mode) {
+                        modes.append(mode)
+                    }
+                }
+
+                let score = max(0.0, 1.0 - (distances[nearest] / radius))
                 return SearchResult(
                     type: .stop,
                     tokens: [[]],
-                    name: place.name,
-                    id: place.parentId ?? place.stopId ?? "",
-                    lat: place.lat,
-                    lon: place.lon,
-                    level: place.level,
+                    name: identifying.name,
+                    id: id,
+                    lat: group[nearest].lat,
+                    lon: group[nearest].lon,
+                    level: group[nearest].level,
                     street: nil,
                     houseNumber: nil,
                     zip: nil,
                     areas: [],
                     score: score,
-                    modes: place.modes
+                    modes: modes
                 )
             }
             .sorted { $0.score > $1.score }
@@ -62,6 +81,32 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
         print("no stops found within \(radius), expanding..")
     }
     return []
+}
+
+func groupPlacesByStop(_ places: [Place]) -> [[Place]] {
+    var groups: [[Place]] = []
+    var names: [String] = []
+
+    for place in places {
+        let name = StopGrouping.normalizedName(place.name)
+        let match = groups.indices.first { index in
+            names[index] == name && groups[index].contains { member in
+                StopGrouping.distance(
+                    lat1: member.lat, lon1: member.lon,
+                    lat2: place.lat, lon2: place.lon
+                ) <= StopGrouping.maxDistance
+            }
+        }
+
+        if let match {
+            groups[match].append(place)
+        } else {
+            groups.append([place])
+            names.append(name)
+        }
+    }
+
+    return groups
 }
 
 public func calculateDistance(userLat: Double, userLon: Double, stopLat: Double, stopLon: Double) -> Double {
