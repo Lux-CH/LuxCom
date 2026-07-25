@@ -49,6 +49,13 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
             return (points, servesRail)
         }
 
+        var railPoints: [(lat: Double, lon: Double, group: Int)] = []
+        for (index, entry) in neighbourhood.enumerated() where entry.servesRail {
+            railPoints.append(contentsOf: entry.points.map { (lat: $0.0, lon: $0.1, group: index) })
+        }
+        let maxLatDelta = departureRadiusMeters / 111_000 * 1.1
+        let maxLonDelta = maxLatDelta / cos(currentLoc.0 * .pi / 180)
+
         if !groups.isEmpty {
             let results = groups.enumerated().compactMap { groupIndex, group -> SearchResult? in
                 let distances = group.map {
@@ -80,13 +87,13 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
                     return nil
                 }
 
-                let hasRailNeighbour = neighbourhood.indices.contains { otherIndex in
-                    guard otherIndex != groupIndex, neighbourhood[otherIndex].servesRail else { return false }
-                    return neighbourhood[otherIndex].points.contains { other in
-                        points.contains { point in
-                            StopGrouping.distance(lat1: point.0, lon1: point.1, lat2: other.0, lon2: other.1)
+                let hasRailNeighbour = railPoints.contains { other in
+                    guard other.group != groupIndex else { return false }
+                    return points.contains { point in
+                        abs(point.0 - other.lat) <= maxLatDelta
+                            && abs(point.1 - other.lon) <= maxLonDelta
+                            && StopGrouping.distance(lat1: point.0, lon1: point.1, lat2: other.lat, lon2: other.lon)
                                 <= departureRadiusMeters
-                        }
                     }
                 }
 
