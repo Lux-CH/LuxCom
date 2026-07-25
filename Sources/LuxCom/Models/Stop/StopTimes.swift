@@ -50,15 +50,25 @@ public struct StopTimes: Codable, Sendable, Equatable {
             let localExtras = extras.filter { !$0.mode.isRail }
             let forecourtIds = Set(localExtras
                 .filter { Self.isStationForecourt($0.place.name) }
-                .map { $0.place.parentId ?? $0.place.stopId })
+                .compactMap { $0.place.parentId ?? $0.place.stopId })
             if !forecourtIds.isEmpty {
-                keepExtra = { !$0.mode.isRail && forecourtIds.contains($0.place.parentId ?? $0.place.stopId) }
-            } else if let lat, let lon {
-                let nearestStation = localExtras.min {
-                    Self.squaredDistance($0.place, lat: lat, lon: lon)
-                        < Self.squaredDistance($1.place, lat: lat, lon: lon)
-                }.map { $0.place.parentId ?? $0.place.stopId }
-                keepExtra = { !$0.mode.isRail && ($0.place.parentId ?? $0.place.stopId) == nearestStation }
+                keepExtra = { stopTime in
+                    guard !stopTime.mode.isRail,
+                          let id = stopTime.place.parentId ?? stopTime.place.stopId
+                    else { return false }
+                    return forecourtIds.contains(id)
+                }
+            } else if let lat, let lon,
+                      let nearestStation = localExtras.min(by: {
+                          Self.squaredDistance($0.place, lat: lat, lon: lon)
+                              < Self.squaredDistance($1.place, lat: lat, lon: lon)
+                      }).flatMap({ $0.place.parentId ?? $0.place.stopId }) {
+                keepExtra = { stopTime in
+                    guard !stopTime.mode.isRail,
+                          let id = stopTime.place.parentId ?? stopTime.place.stopId
+                    else { return false }
+                    return id == nearestStation
+                }
             } else {
                 keepExtra = { !$0.mode.isRail }
             }

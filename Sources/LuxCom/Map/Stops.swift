@@ -58,13 +58,22 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
 
         if !groups.isEmpty {
             let results = groups.enumerated().compactMap { groupIndex, group -> SearchResult? in
-                let distances = group.map {
-                    StopGrouping.distance(
-                        lat1: currentLoc.0, lon1: currentLoc.1,
-                        lat2: $0.lat, lon2: $0.lon
-                    )
+                let closest = group.map { place -> (distance: Double, lat: Double, lon: Double) in
+                    let id = place.parentId ?? place.stopId ?? ""
+                    let candidates = pointsById[id] ?? [(place.lat, place.lon)]
+                    var best = (distance: Double.greatestFiniteMagnitude, lat: place.lat, lon: place.lon)
+                    for point in candidates {
+                        let distance = StopGrouping.distance(
+                            lat1: currentLoc.0, lon1: currentLoc.1,
+                            lat2: point.0, lon2: point.1
+                        )
+                        if distance < best.distance {
+                            best = (distance, point.0, point.1)
+                        }
+                    }
+                    return best
                 }
-                guard let nearest = distances.indices.min(by: { distances[$0] < distances[$1] }) else {
+                guard let nearest = closest.indices.min(by: { closest[$0].distance < closest[$1].distance }) else {
                     return nil
                 }
 
@@ -105,14 +114,14 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
                     }
                 }
 
-                let score = max(0.0, 1.0 - (distances[nearest] / radius))
+                let score = max(0.0, 1.0 - (closest[nearest].distance / radius))
                 return SearchResult(
                     type: .stop,
                     tokens: [[]],
                     name: identifying.name,
                     id: id,
-                    lat: group[nearest].lat,
-                    lon: group[nearest].lon,
+                    lat: closest[nearest].lat,
+                    lon: closest[nearest].lon,
                     level: group[nearest].level,
                     street: nil,
                     houseNumber: nil,

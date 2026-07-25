@@ -28,6 +28,7 @@ public struct SearchResult: Codable, Identifiable, Sendable {
 
     public enum CodingKeys: String, CodingKey {
         case type, tokens, name, id, lat, lon, level, street, houseNumber, zip, areas, score, modes
+        case groupedStopIds, hasRailNeighbour
     }
 
     public init(from decoder: Decoder) throws {
@@ -45,6 +46,8 @@ public struct SearchResult: Codable, Identifiable, Sendable {
         areas = try container.decodeIfPresent([Area].self, forKey: .areas) ?? []
         score = try container.decode(Double.self, forKey: .score)
         modes = try container.decodeIfPresent([TransportationMode].self, forKey: .modes) ?? []
+        groupedStopIds = try container.decodeIfPresent([String].self, forKey: .groupedStopIds) ?? []
+        hasRailNeighbour = try container.decodeIfPresent(Bool.self, forKey: .hasRailNeighbour)
     }
 
     public struct Area: Codable, Sendable {
