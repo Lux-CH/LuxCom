@@ -7,6 +7,8 @@
 
 import Foundation
 
+public let departureRadiusMeters: Double = 300
+
 public enum StopGrouping {
     public static let maxDistance: Double = 200
 

@@ -16,14 +16,17 @@ public func getMapStops(min: (Double, Double), max: (Double, Double)) async thro
 public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [SearchResult] {
     for radius in [500.0, 1000.0, 5000.0] {
         let bbox = calculateBoundingBox(center: currentLoc, radiusMeters: radius)
-        
-        let stops = try await getMapStops(min: bbox.min, max: bbox.max)
-        
+        let fetchBox = calculateBoundingBox(center: currentLoc, radiusMeters: radius + departureRadiusMeters)
+
+        let stops = try await getMapStops(min: fetchBox.min, max: fetchBox.max)
+
         var seen: [String: Int] = [:]
         var uniqueStops: [Place] = []
+        var pointsById: [String: [(Double, Double)]] = [:]
         for place in stops {
             let id = place.parentId ?? place.stopId ?? ""
             guard !id.isEmpty else { continue }
+            pointsById[id, default: []].append((place.lat, place.lon))
             if let index = seen[id] {
                 for mode in place.modes where !uniqueStops[index].modes.contains(mode) {
                     uniqueStops[index].modes.append(mode)
@@ -35,9 +38,19 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
         }
 
         let groups = groupPlacesByStop(uniqueStops)
+        let neighbourhood = groups.map { group -> (points: [(Double, Double)], servesRail: Bool) in
+            var points: [(Double, Double)] = []
+            var servesRail = false
+            for place in group {
+                let id = place.parentId ?? place.stopId ?? ""
+                points.append(contentsOf: pointsById[id] ?? [(place.lat, place.lon)])
+                servesRail = servesRail || place.modes.contains { $0.isRail }
+            }
+            return (points, servesRail)
+        }
 
         if !groups.isEmpty {
-            let results = groups.compactMap { group -> SearchResult? in
+            let results = groups.enumerated().compactMap { groupIndex, group -> SearchResult? in
                 let distances = group.map {
                     StopGrouping.distance(
                         lat1: currentLoc.0, lon1: currentLoc.1,
@@ -60,6 +73,31 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
                     }
                 }
 
+                let points = neighbourhood[groupIndex].points
+                guard points.contains(where: {
+                    $0.0 >= bbox.min.0 && $0.0 <= bbox.max.0 && $0.1 >= bbox.min.1 && $0.1 <= bbox.max.1
+                }) else {
+                    return nil
+                }
+
+                let hasRailNeighbour = neighbourhood.indices.contains { otherIndex in
+                    guard otherIndex != groupIndex, neighbourhood[otherIndex].servesRail else { return false }
+                    return neighbourhood[otherIndex].points.contains { other in
+                        points.contains { point in
+                            StopGrouping.distance(lat1: point.0, lon1: point.1, lat2: other.0, lon2: other.1)
+                                <= departureRadiusMeters
+                        }
+                    }
+                }
+
+                var groupedStopIds: [String] = []
+                for place in group {
+                    let memberId = place.parentId ?? place.stopId ?? ""
+                    if !memberId.isEmpty && !groupedStopIds.contains(memberId) {
+                        groupedStopIds.append(memberId)
+                    }
+                }
+
                 let score = max(0.0, 1.0 - (distances[nearest] / radius))
                 return SearchResult(
                     type: .stop,
@@ -74,12 +112,16 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
                     zip: nil,
                     areas: [],
                     score: score,
-                    modes: modes
+                    modes: modes,
+                    groupedStopIds: groupedStopIds,
+                    hasRailNeighbour: hasRailNeighbour
                 )
             }
             .sorted { $0.score > $1.score }
 
-            return results
+            if !results.isEmpty {
+                return results
+            }
         }
         
         print("no stops found within \(radius), expanding..")
