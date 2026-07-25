@@ -45,7 +45,8 @@ public struct StopTimes: Codable, Sendable, Equatable {
         let keepExtra: (StopTime) -> Bool
 
         if !homeServesRail {
-            keepExtra = { $0.mode.isRail }
+            let servesStation = name.map(StopGrouping.isStationForecourt) ?? true
+            keepExtra = servesStation ? { $0.mode.isRail } : { _ in false }
         } else {
             let localExtras = extras.filter { !$0.mode.isRail }
             let forecourtIds = Set(localExtras
@@ -84,8 +85,7 @@ public struct StopTimes: Codable, Sendable, Equatable {
     }
 
     private static func isStationForecourt(_ name: String) -> Bool {
-        let n = name.lowercased()
-        return n.contains("gare") || n.contains("bahnhof") || n.contains("stazione")
+        StopGrouping.isStationForecourt(name)
     }
 
     private static func squaredDistance(_ place: Place, lat: Double, lon: Double) -> Double {
