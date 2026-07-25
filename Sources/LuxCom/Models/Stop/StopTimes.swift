@@ -18,9 +18,17 @@ public struct StopTimes: Codable, Sendable, Equatable {
         self.nextPageCursor = nextPageCursor
     }
 
-    public func filteredToStation(stopId: String, lat: Double? = nil, lon: Double? = nil, servesRail: Bool = false) -> StopTimes {
+    public func filteredToStation(stopId: String, name: String? = nil, lat: Double? = nil, lon: Double? = nil, servesRail: Bool = false) -> StopTimes {
         func isHome(_ st: StopTime) -> Bool {
-            st.place.parentId == stopId || st.place.stopId == stopId
+            if st.place.parentId == stopId || st.place.stopId == stopId {
+                return true
+            }
+
+            guard let name, let lat, let lon else { return false }
+            return StopGrouping.isSameStop(
+                name: st.place.name, lat: st.place.lat, lon: st.place.lon,
+                asName: name, lat: lat, lon: lon
+            )
         }
 
         let home = stopTimes.filter(isHome)
