@@ -32,7 +32,23 @@ public enum StopGrouping {
         lon otherLon: Double,
         within limit: Double = maxDistance
     ) -> Bool {
-        normalizedName(name) == normalizedName(otherName)
-            && distance(lat1: lat, lon1: lon, lat2: otherLat, lon2: otherLon) <= limit
+        isSameStop(
+            name: name, lat: lat, lon: lon,
+            asNormalizedName: normalizedName(otherName), lat: otherLat, lon: otherLon,
+            within: limit
+        )
+    }
+
+    public static func isSameStop(
+        name: String,
+        lat: Double,
+        lon: Double,
+        asNormalizedName otherName: String,
+        lat otherLat: Double,
+        lon otherLon: Double,
+        within limit: Double = maxDistance
+    ) -> Bool {
+        distance(lat1: lat, lon1: lon, lat2: otherLat, lon2: otherLon) <= limit
+            && normalizedName(name) == otherName
     }
 }
