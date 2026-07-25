@@ -18,6 +18,11 @@ public enum StopGrouping {
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
+    public static func isStationForecourt(_ name: String) -> Bool {
+        let n = name.lowercased()
+        return n.contains("gare") || n.contains("bahnhof") || n.contains("stazione")
+    }
+
     public static func distance(lat1: Double, lon1: Double, lat2: Double, lon2: Double) -> Double {
         let earthRadius = 6_371_000.0
         let dLat = (lat2 - lat1) * .pi / 180
