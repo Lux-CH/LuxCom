@@ -24,6 +24,7 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
     
     public let vertexType: VertexType
     public var modes: [TransportationMode]
+    public let importance: Double?
 
     public enum VertexType: String, Codable, Sendable {
         case normal = "NORMAL"
@@ -35,9 +36,9 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
         case name, stopId, parentId, lat, lon, level, arrival, departure
         case scheduledArrival, scheduledDeparture, scheduledTrack
         case track = "track"
-        case vertexType, modes
+        case vertexType, modes, importance
     }
-    public init(name: String, stopId: String?, parentId: String? = nil, lat: Double, lon: Double, level: Double, arrival: Date?, departure: Date?, scheduledArrival: Date?, scheduledDeparture: Date?, scheduledTrack: String?, track: String?, vertexType: VertexType, modes: [TransportationMode] = []) {
+    public init(name: String, stopId: String?, parentId: String? = nil, lat: Double, lon: Double, level: Double, arrival: Date?, departure: Date?, scheduledArrival: Date?, scheduledDeparture: Date?, scheduledTrack: String?, track: String?, vertexType: VertexType, modes: [TransportationMode] = [], importance: Double? = nil) {
         self.name = name
         self.stopId = stopId
         self.parentId = parentId
@@ -52,6 +53,7 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
         self.track = track
         self.vertexType = vertexType
         self.modes = modes
+        self.importance = importance
     }
 
     public init(from decoder: Decoder) throws {
@@ -70,5 +72,6 @@ public struct Place: Codable, Hashable, Sendable, Equatable, Identifiable {
         track = try container.decodeIfPresent(String.self, forKey: .track)
         vertexType = try container.decode(VertexType.self, forKey: .vertexType)
         modes = try container.decodeIfPresent([TransportationMode].self, forKey: .modes) ?? []
+        importance = try container.decodeIfPresent(Double.self, forKey: .importance)
     }
 }
