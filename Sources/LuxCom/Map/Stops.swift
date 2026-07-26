@@ -77,7 +77,12 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
                     return nil
                 }
 
-                let identifying = group.first { $0.parentId != nil } ?? group[nearest]
+                let ranked = group.filter { $0.importance != nil }.max { lhs, rhs in
+                    let l = lhs.importance ?? -1, r = rhs.importance ?? -1
+                    if l != r { return l < r }
+                    return !lhs.modes.contains { $0.isRail } && rhs.modes.contains { $0.isRail }
+                }
+                let identifying = ranked ?? group.first { $0.parentId != nil } ?? group[nearest]
                 guard let id = identifying.parentId ?? identifying.stopId, !id.isEmpty else {
                     return nil
                 }
@@ -147,24 +152,28 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
 
 func groupPlacesByStop(_ places: [Place]) -> [[Place]] {
     var groups: [[Place]] = []
-    var groupsByName: [String: [Int]] = [:]
+    var groupsByFamily: [String: [Int]] = [:]
 
     for place in places {
+        let family = StopGrouping.stationFamily(place.name)
         let name = StopGrouping.normalizedName(place.name)
-        let candidates = groupsByName[name] ?? []
+        let candidates = groupsByFamily[family] ?? []
         let match = candidates.first { index in
             groups[index].contains { member in
-                StopGrouping.distance(
+                let limit = StopGrouping.normalizedName(member.name) == name
+                    ? StopGrouping.maxDistance
+                    : StopGrouping.familyMaxDistance
+                return StopGrouping.distance(
                     lat1: member.lat, lon1: member.lon,
                     lat2: place.lat, lon2: place.lon
-                ) <= StopGrouping.maxDistance
+                ) <= limit
             }
         }
 
         if let match {
             groups[match].append(place)
         } else {
-            groupsByName[name, default: []].append(groups.count)
+            groupsByFamily[family, default: []].append(groups.count)
             groups.append([place])
         }
     }

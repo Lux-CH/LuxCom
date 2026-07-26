@@ -11,11 +11,34 @@ public let departureRadiusMeters: Double = 300
 
 public enum StopGrouping {
     public static let maxDistance: Double = 200
+    public static let familyMaxDistance: Double = 350
 
     public static func normalizedName(_ name: String) -> String {
         name
             .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
             .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    public static let genericLocationTerms: Set<String> = [
+        "centre", "gare", "place", "douane", "gare cornavin", "p+r", "bahnhof", "stazione"
+    ]
+
+    public static func isGenericLocationTerm(_ term: String) -> Bool {
+        genericLocationTerms.contains(term.trimmingCharacters(in: .whitespaces).lowercased())
+    }
+
+    public static func stationFamily(_ name: String) -> String {
+        var base = normalizedName(name)
+        if let slash = base.firstIndex(of: "/") {
+            base = String(base[base.startIndex..<slash])
+        }
+        let parts = base
+            .components(separatedBy: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+        guard parts.count > 1, isStationForecourt(parts[1]) else {
+            return base.trimmingCharacters(in: .whitespaces).lowercased()
+        }
+        return parts[0].lowercased()
     }
 
     public static func isStationForecourt(_ name: String) -> Bool {
