@@ -15,6 +15,22 @@ public enum APIError: Error {
 
 private enum ConnectionError: Error {
     case underlying(Error)
+
+    var underlyingError: Error {
+        switch self {
+        case .underlying(let error): return error
+        }
+    }
+
+    var isLocalConnectivity: Bool {
+        guard let urlError = underlyingError as? URLError else { return false }
+        switch urlError.code {
+        case .notConnectedToInternet, .dataNotAllowed, .internationalRoamingOff, .callIsActive:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 private let sharedSession: URLSession = {
@@ -23,6 +39,8 @@ private let sharedSession: URLSession = {
     config.timeoutIntervalForResource = 15
     return URLSession(configuration: config)
 }()
+
+private let primaryRetryTimeout: TimeInterval = 2.5
 
 // Reused across every request: constructing a JSONDecoder per call is wasteful
 // on the hot polling paths (departures every 5s, trip refresh every 10s). The
@@ -35,22 +53,52 @@ private let sharedDecoder: JSONDecoder = {
 
 actor APIState {
     static let shared = APIState()
-    
-    var primaryServerAvailable = true
-    var lastPrimaryCheck: Date = .distantPast
-    let retryPrimaryAfter: TimeInterval = 30
-    
+
+    private var primaryProven = false
+    private var failureStreak = 0
+    private var streakStartedAt: Date = .distantPast
+    private var lastFailureAt: Date = .distantPast
+    private var backupUntil: Date = .distantPast
+
+    private let backupPeriod: TimeInterval = 30
+    private let failuresBeforeSwitch = 3
+    private let sustainedFailureWindow: TimeInterval = 8
+    private let streakMemory: TimeInterval = 60
+
     func shouldUsePrimary() -> Bool {
-        if !primaryServerAvailable,
-           Date().timeIntervalSince(lastPrimaryCheck) > retryPrimaryAfter {
-            primaryServerAvailable = true
+        guard Date() >= backupUntil else { return false }
+        if backupUntil != .distantPast {
+            backupUntil = .distantPast
+            failureStreak = 0
         }
-        return primaryServerAvailable
+        return true
     }
-    
-    func markPrimaryDown() {
-        primaryServerAvailable = false
-        lastPrimaryCheck = Date()
+
+    func shouldRetryPrimary() -> Bool {
+        primaryProven
+    }
+
+    func markPrimaryReachable() {
+        primaryProven = true
+        failureStreak = 0
+        backupUntil = .distantPast
+    }
+
+    func recordPrimaryFailure() -> Bool {
+        let now = Date()
+        if failureStreak == 0 || now.timeIntervalSince(lastFailureAt) > streakMemory {
+            failureStreak = 0
+            streakStartedAt = now
+        }
+        failureStreak += 1
+        lastFailureAt = now
+
+        let sustained = failureStreak >= failuresBeforeSwitch
+            && now.timeIntervalSince(streakStartedAt) >= sustainedFailureWindow
+        guard sustained || !primaryProven else { return false }
+
+        backupUntil = now.addingTimeInterval(backupPeriod)
+        return true
     }
 }
 
@@ -65,35 +113,25 @@ struct APIClient {
         body: Data? = nil
     ) async throws -> T {
         if let baseURL = baseURL {
-            return try await performRequest(
-                from: endpoint,
-                apiVersion: apiVersion,
-                queryItems: queryItems,
-                baseURL: baseURL,
-                headers: headers,
-                method: method,
-                body: body
-            )
+            do {
+                return try await performRequest(
+                    from: endpoint,
+                    apiVersion: apiVersion,
+                    queryItems: queryItems,
+                    baseURL: baseURL,
+                    headers: headers,
+                    method: method,
+                    body: body
+                )
+            } catch let error as ConnectionError {
+                throw error.underlyingError
+            }
         }
-        
+
         let state = APIState.shared
-        let usePrimary = await state.shouldUsePrimary()
-        let resolvedURL = usePrimary ? apiUrl : bckpApiUrl
-        
-        do {
-            return try await performRequest(
-                from: endpoint,
-                apiVersion: apiVersion,
-                queryItems: queryItems,
-                baseURL: resolvedURL,
-                headers: headers,
-                method: method,
-                body: body
-            )
-        } catch {
-            if usePrimary && Self.isConnectionError(error) {
-                print("Primary server failed, switching to backup")
-                await state.markPrimaryDown()
+
+        func requestBackup() async throws -> T {
+            do {
                 return try await performRequest(
                     from: endpoint,
                     apiVersion: apiVersion,
@@ -103,8 +141,56 @@ struct APIClient {
                     method: method,
                     body: body
                 )
+            } catch let error as ConnectionError {
+                throw error.underlyingError
             }
-            throw error
+        }
+
+        func requestPrimary(timeout: TimeInterval?) async throws -> T {
+            do {
+                let result: T = try await performRequest(
+                    from: endpoint,
+                    apiVersion: apiVersion,
+                    queryItems: queryItems,
+                    baseURL: apiUrl,
+                    headers: headers,
+                    method: method,
+                    body: body,
+                    timeout: timeout
+                )
+                await state.markPrimaryReachable()
+                return result
+            } catch is CancellationError {
+                throw CancellationError()
+            } catch let error as ConnectionError {
+                throw error
+            } catch {
+                await state.markPrimaryReachable()
+                throw error
+            }
+        }
+
+        guard await state.shouldUsePrimary() else {
+            return try await requestBackup()
+        }
+
+        do {
+            return try await requestPrimary(timeout: nil)
+        } catch let error as ConnectionError {
+            guard !error.isLocalConnectivity else { throw error.underlyingError }
+
+            if await state.shouldRetryPrimary() {
+                do {
+                    return try await requestPrimary(timeout: primaryRetryTimeout)
+                } catch let retryError as ConnectionError {
+                    guard !retryError.isLocalConnectivity else { throw retryError.underlyingError }
+                }
+            }
+
+            if await state.recordPrimaryFailure() {
+                print("Primary server unreachable, staying on backup for now")
+            }
+            return try await requestBackup()
         }
     }
     
@@ -115,7 +201,8 @@ struct APIClient {
         baseURL: String,
         headers: [String: String],
         method: String,
-        body: Data?
+        body: Data?,
+        timeout: TimeInterval? = nil
     ) async throws -> T {
         guard var components = URLComponents(string: "\(baseURL)/\(apiVersion)\(endpoint)") else {
             throw APIError.invalidURL
@@ -132,7 +219,11 @@ struct APIClient {
         var request = URLRequest(url: url)
         request.httpMethod = method
         request.assumesHTTP3Capable = false
-        
+
+        if let timeout = timeout {
+            request.timeoutInterval = timeout
+        }
+
         for (key, value) in headers {
             request.addValue(value, forHTTPHeaderField: key)
         }
@@ -169,9 +260,5 @@ struct APIClient {
         } catch {
             throw APIError.decodingFailed(error)
         }
-    }
-
-    private static func isConnectionError(_ error: Error) -> Bool {
-        return error is ConnectionError
     }
 }
