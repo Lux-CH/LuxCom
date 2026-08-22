@@ -44,7 +44,7 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
             for place in group {
                 let id = place.parentId ?? place.stopId ?? ""
                 points.append(contentsOf: pointsById[id] ?? [(place.lat, place.lon)])
-                servesRail = servesRail || place.modes.contains { $0.isRail }
+                servesRail = servesRail || place.modes.contains { $0.isMainlineRail }
             }
             return (points, servesRail)
         }
@@ -80,7 +80,7 @@ public func getMapSearchResults(currentLoc: (Double, Double)) async throws -> [S
                 let ranked = group.filter { $0.importance != nil }.max { lhs, rhs in
                     let l = lhs.importance ?? -1, r = rhs.importance ?? -1
                     if l != r { return l < r }
-                    return !lhs.modes.contains { $0.isRail } && rhs.modes.contains { $0.isRail }
+                    return !lhs.modes.contains { $0.isMainlineRail } && rhs.modes.contains { $0.isMainlineRail }
                 }
                 let identifying = ranked ?? group.first { $0.parentId != nil } ?? group[nearest]
                 guard let id = identifying.parentId ?? identifying.stopId, !id.isEmpty else {

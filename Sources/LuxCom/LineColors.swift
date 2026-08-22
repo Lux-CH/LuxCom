@@ -254,6 +254,50 @@ public struct LineColors {
         return Dictionary(uniqueKeysWithValues: colors.map { ($0.line, $0) })
     }()
     
+    static let postAutoColor = LineColor(line: "", color: Color(hex: "FFCC00"), textColor: Color(hex: "FF0000"))
+    static let cgnLinesColor: [String: LineColor] = {
+        let colors = [
+            LineColor(line: "N1", color: Color(hex: "ee057a")),
+            LineColor(line: "N2", color: Color(hex: "58ba4b")),
+            LineColor(line: "N3", color: Color(hex: "f36a22")),
+            LineColor(line: "N4", color: Color(hex: "1187b3")),
+        ]
+        return Dictionary(uniqueKeysWithValues: colors.map { ($0.line, $0) })
+    }()
+
+    public static let lausanneAgencies: Set<String> = ["151", "55", "764", "7256", "344", "29"]
+    public static let tacAgencies: Set<String> = ["1"]
+    public static let postAutoAgencies: Set<String> = ["801"]
+    public static let cgnAgencies: Set<String> = ["184"]
+
+    public struct ResolvedLineColor: Sendable {
+        public let color: Color
+        public let textColor: Color
+        public let isBranded: Bool
+    }
+
+    public static func resolve(line: String, agency: String?, isSquared: Bool) -> ResolvedLineColor {
+        if let match = branded(line: line, agency: agency) {
+            return ResolvedLineColor(color: match.color, textColor: match.textColor, isBranded: true)
+        }
+        return ResolvedLineColor(
+            color: isSquared ? Color(hex: "EA0706") : Color.accentColor,
+            textColor: .white,
+            isBranded: false
+        )
+    }
+
+    private static func branded(line: String, agency: String?) -> LineColor? {
+        guard let agency, !agency.isEmpty else {
+            return tpgLinesColor[line] ?? tlLinesColor[line] ?? tacLinesColors[line]
+        }
+        if tacAgencies.contains(agency) { return tacLinesColors[line] }
+        if lausanneAgencies.contains(agency) { return tlLinesColor[line] }
+        if postAutoAgencies.contains(agency) { return postAutoColor }
+        if cgnAgencies.contains(agency) { return cgnLinesColor[line] }
+        return tpgLinesColor[line]
+    }
+
     public static func color(for line: String) -> Color? {
         return tpgLinesColor[line]?.color
     }

@@ -26,6 +26,8 @@ public struct SearchResult: Codable, Identifiable, Sendable {
 
     public var servesRail: Bool { modes.contains { $0.isRail } }
 
+    public var servesMainlineRail: Bool { modes.contains { $0.isMainlineRail } }
+
     public enum CodingKeys: String, CodingKey {
         case type, tokens, name, id, lat, lon, level, street, houseNumber, zip, areas, score, modes
         case groupedStopIds, hasRailNeighbour
