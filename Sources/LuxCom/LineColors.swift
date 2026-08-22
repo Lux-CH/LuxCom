@@ -97,6 +97,7 @@ public struct LineColors {
             LineColor(line: "80", color: Color(hex: "FF9BAA"), textColor: .black),
             LineColor(line: "82", color: Color(hex: "EC619F")),
             LineColor(line: "83", color: Color(hex: "EC619F")),
+            LineColor(line: "84", color: Color(hex: "F5B5D2"), textColor: .black),
             LineColor(line: "91", color: Color(hex: "005F61")),
             LineColor(line: "92", color: Color(hex: "89CBBE"), textColor: .black),
             LineColor(line: "E", color: Color(hex: "FF7E00")),
