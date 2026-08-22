@@ -18,7 +18,7 @@ public struct StopTimes: Codable, Sendable, Equatable {
         self.nextPageCursor = nextPageCursor
     }
 
-    public func filteredToStation(stopId: String, name: String? = nil, lat: Double? = nil, lon: Double? = nil, servesRail: Bool = false, groupedStopIds: [String] = []) -> StopTimes {
+    public func filteredToStation(stopId: String, name: String? = nil, lat: Double? = nil, lon: Double? = nil, servesMainlineRail: Bool = false, groupedStopIds: [String] = []) -> StopTimes {
         let targetName = name.map(StopGrouping.normalizedName)
         let memberIds = Set(groupedStopIds)
 
@@ -48,20 +48,20 @@ public struct StopTimes: Codable, Sendable, Equatable {
         }
         guard !extras.isEmpty, !home.isEmpty else { return self }
 
-        let homeServesRail = servesRail || home.contains { $0.mode.isRail }
+        let homeServesRail = servesMainlineRail || home.contains { $0.mode.isMainlineRail }
         let keepExtra: (StopTime) -> Bool
 
         if !homeServesRail {
             let servesStation = name.map(StopGrouping.isStationForecourt) ?? true
-            keepExtra = servesStation ? { $0.mode.isRail } : { _ in false }
+            keepExtra = servesStation ? { $0.mode.isMainlineRail } : { _ in false }
         } else {
-            let localExtras = extras.filter { !$0.mode.isRail }
+            let localExtras = extras.filter { !$0.mode.isMainlineRail }
             let forecourtIds = Set(localExtras
                 .filter { Self.isStationForecourt($0.place.name) }
                 .compactMap { $0.place.parentId ?? $0.place.stopId })
             if !forecourtIds.isEmpty {
                 keepExtra = { stopTime in
-                    guard !stopTime.mode.isRail,
+                    guard !stopTime.mode.isMainlineRail,
                           let id = stopTime.place.parentId ?? stopTime.place.stopId
                     else { return false }
                     return forecourtIds.contains(id)
@@ -72,13 +72,13 @@ public struct StopTimes: Codable, Sendable, Equatable {
                               < Self.squaredDistance($1.place, lat: lat, lon: lon)
                       }).flatMap({ $0.place.parentId ?? $0.place.stopId }) {
                 keepExtra = { stopTime in
-                    guard !stopTime.mode.isRail,
+                    guard !stopTime.mode.isMainlineRail,
                           let id = stopTime.place.parentId ?? stopTime.place.stopId
                     else { return false }
                     return id == nearestStation
                 }
             } else {
-                keepExtra = { !$0.mode.isRail }
+                keepExtra = { !$0.mode.isMainlineRail }
             }
         }
 

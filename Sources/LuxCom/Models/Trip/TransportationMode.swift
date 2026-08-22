@@ -44,4 +44,13 @@ public enum TransportationMode: String, Codable, Hashable, Sendable {
             return false
         }
     }
+
+    public var isMainlineRail: Bool {
+        switch self {
+        case .subway, .funicular:
+            return false
+        default:
+            return isRail
+        }
+    }
 }
