@@ -13,6 +13,17 @@ public enum APIError: Error {
     case decodingFailed(Error)
 }
 
+private func isGatewayFailure(_ statusCode: Int) -> Bool {
+    switch statusCode {
+    case 502, 503, 504, 530:
+        return true
+    case 520...527:
+        return true
+    default:
+        return false
+    }
+}
+
 private enum ConnectionError: Error {
     case underlying(Error)
 
@@ -249,10 +260,14 @@ struct APIClient {
         }
         
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw APIError.requestFailed(
+            let failure = APIError.requestFailed(
                 statusCode: httpResponse.statusCode,
                 description: String(data: data, encoding: .utf8)
             )
+            if isGatewayFailure(httpResponse.statusCode) {
+                throw ConnectionError.underlying(failure)
+            }
+            throw failure
         }
         
         do {
