@@ -169,7 +169,7 @@ public struct LineColors {
     }()
     static let tlLinesColor: [String: LineColor] = {
         var colors = [
-            LineColor(line: "m1", color: Color(hex: "EC008C")),
+            LineColor(line: "m1", color: Color(hex: "0076BA")),
             LineColor(line: "m2", color: Color(hex: "EC008C")),
             LineColor(line: "R20", color: Color(hex: "58B947")),
             LineColor(line: "N1", color: Color(hex: "df0915")),
