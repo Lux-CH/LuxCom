@@ -27,6 +27,24 @@ public enum StopGrouping {
         genericLocationTerms.contains(term.trimmingCharacters(in: .whitespaces).lowercased())
     }
 
+    public static let forecourtTerms: Set<String> = ["gare", "bahnhof", "stazione"]
+
+    private static let nameSeparators: Set<Character> = [",", "-", "/", ".", "\u{27}", "\u{2019}"]
+
+    public static func separatorInsensitiveKey(_ name: String) -> String {
+        let spaced = String(name.map { nameSeparators.contains($0) ? " " : $0 })
+        return spaced.split(separator: " ").joined(separator: " ").lowercased()
+    }
+
+    public static func droppingTrailingForecourt(_ key: String) -> String {
+        var words = key.split(separator: " ")
+        guard words.count > 1, forecourtTerms.contains(String(words[words.count - 1])) else {
+            return key
+        }
+        words.removeLast()
+        return words.joined(separator: " ")
+    }
+
     public static func stationFamily(_ name: String) -> String {
         var base = normalizedName(name)
         if let slash = base.firstIndex(of: "/") {
@@ -36,9 +54,9 @@ public enum StopGrouping {
             .components(separatedBy: ",")
             .map { $0.trimmingCharacters(in: .whitespaces) }
         guard parts.count > 1, isStationForecourt(parts[1]) else {
-            return base.trimmingCharacters(in: .whitespaces).lowercased()
+            return droppingTrailingForecourt(separatorInsensitiveKey(base))
         }
-        return parts[0].lowercased()
+        return droppingTrailingForecourt(separatorInsensitiveKey(parts[0]))
     }
 
     public static func isStationForecourt(_ name: String) -> Bool {
