@@ -8,7 +8,7 @@
 import Foundation
 
 public struct LegGeometry: Codable, Sendable {
-    public let points: String // the encoded points of the polyline, Google polyline encoding, precision 7
+    public let points: String // the encoded points of the polyline, Google polyline encoding, precision 6
     public let length: Int // the number of points in the string
     public init(points: String, length: Int) {
         self.points = points

@@ -26,30 +26,31 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
         URLQueryItem(name: "useRoutedTransfers", value: String(options.useRoutedTransfers ?? true)),
         URLQueryItem(name: "maxMatchingDistance", value: String(options.maxMatchingDistance ?? 250)),
         URLQueryItem(name: "detailedTransfers", value: String(options.detailedTransfers ?? true)),
-        URLQueryItem(name: "timetableView", value: String(options.timetableView)),
-        URLQueryItem(name: "fastestDirectFactor", value: "1.5")
+        URLQueryItem(name: "timetableView", value: String(options.timetableView))
     ]
+
+    // MOTIS drops transit routes slower than 1.5x the direct walk/ride, but direct trips
+    // ignore via stops, so with vias this would prune every route that honours them.
+    if options.via?.isEmpty ?? true {
+        queryItems.append(URLQueryItem(name: "fastestDirectFactor", value: "1.5"))
+    }
     
     if let time = options.time {
         queryItems.append(URLQueryItem(name: "time", value: dateFormatter.string(from: time)))
     }
     
+    // MOTIS declares array params with `explode: false`: one comma-separated value.
     if let via = options.via, !via.isEmpty {
-        for viaStop in via {
-            queryItems.append(URLQueryItem(name: "via", value: viaStop))
-        }
-    }
-    
-    if !options.viaMinimumStay.isEmpty {
-        for stayTime in options.viaMinimumStay {
-            queryItems.append(URLQueryItem(name: "viaMinimumStay", value: String(stayTime)))
+        queryItems.append(URLQueryItem(name: "via", value: via.prefix(2).joined(separator: ",")))
+
+        if !options.viaMinimumStay.isEmpty {
+            let stays = options.viaMinimumStay.prefix(via.count).map(String.init)
+            queryItems.append(URLQueryItem(name: "viaMinimumStay", value: stays.joined(separator: ",")))
         }
     }
     
     if let transitModes = options.transitModes, !transitModes.isEmpty {
-        for mode in transitModes {
-            queryItems.append(URLQueryItem(name: "transitModes", value: mode.rawValue))
-        }
+        queryItems.append(URLQueryItem(name: "transitModes", value: transitModes.map(\.rawValue).joined(separator: ",")))
     }
     
     if let numItineraries = options.numItineraries {
@@ -76,5 +77,5 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
         queryItems.append(URLQueryItem(name: "numLegAlternatives", value: String(numLegAlternatives)))
     }
     
-    return try await APIClient.fetch(from: "/plan", apiVersion: "v4", queryItems: queryItems)
+    return try await APIClient.fetch(from: "/plan", apiVersion: "v6", queryItems: queryItems)
 }
