@@ -13,5 +13,6 @@ public struct Disruption: Identifiable, Hashable, Sendable, Decodable {
     public let lineDisruption: String
     public let agencyId: String?
     public let tripIds: [String]?
+    public let stopIds: [String]?
     public var id: String { lineDisruption }
 }
