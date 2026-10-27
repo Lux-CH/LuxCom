@@ -45,6 +45,10 @@ public enum TransportationMode: String, Codable, Hashable, Sendable {
         }
     }
 
+    public var isCycling: Bool {
+        self == .bike || self == .rental
+    }
+
     public var isMainlineRail: Bool {
         switch self {
         case .subway, .funicular:

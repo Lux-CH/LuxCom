@@ -28,12 +28,13 @@ public struct Leg: Codable, Sendable {
     public let steps: [StepInstruction]?
     public let interlineWithPreviousLeg: Bool?
     public let alternatives: [[Leg]]?
+    public let rental: Rental?
 
     public enum CodingKeys: String, CodingKey {
         case mode, from, to, duration, startTime, endTime
         case scheduledStartTime, scheduledEndTime, realTime, cancelled
         case distance, headsign, routeShortName, intermediateStops
-        case legGeometry, agencyId, tripId, steps, interlineWithPreviousLeg, alternatives
+        case legGeometry, agencyId, tripId, steps, interlineWithPreviousLeg, alternatives, rental
     }
 
     public init(from decoder: Decoder) throws {
@@ -58,9 +59,10 @@ public struct Leg: Codable, Sendable {
         steps = try container.decodeIfPresent([StepInstruction].self, forKey: .steps)
         interlineWithPreviousLeg = try container.decodeIfPresent(Bool.self, forKey: .interlineWithPreviousLeg)
         alternatives = try container.decodeIfPresent([[Leg]].self, forKey: .alternatives)
+        rental = try container.decodeIfPresent(Rental.self, forKey: .rental)
     }
 
-    public init(mode: TransportationMode, from: Place, to: Place, duration: Int, startTime: Date, endTime: Date, scheduledStartTime: Date, scheduledEndTime: Date, realTime: Bool, cancelled: Bool = false, distance: Double?, headsign: String?, routeShortName: String?, intermediateStops: [Place]?, legGeometry: LegGeometry, agencyId: String?, tripId: String?, steps: [StepInstruction]?, interlineWithPreviousLeg: Bool? = nil, alternatives: [[Leg]]? = nil) {
+    public init(mode: TransportationMode, from: Place, to: Place, duration: Int, startTime: Date, endTime: Date, scheduledStartTime: Date, scheduledEndTime: Date, realTime: Bool, cancelled: Bool = false, distance: Double?, headsign: String?, routeShortName: String?, intermediateStops: [Place]?, legGeometry: LegGeometry, agencyId: String?, tripId: String?, steps: [StepInstruction]?, interlineWithPreviousLeg: Bool? = nil, alternatives: [[Leg]]? = nil, rental: Rental? = nil) {
         self.mode = mode
         self.from = from
         self.to = to
@@ -81,5 +83,6 @@ public struct Leg: Codable, Sendable {
         self.steps = steps
         self.interlineWithPreviousLeg = interlineWithPreviousLeg
         self.alternatives = alternatives
+        self.rental = rental
     }
 }
