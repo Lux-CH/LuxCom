@@ -47,6 +47,11 @@ public struct RouteOptions: Sendable {
     public let maxPreTransitTime: Int?
     public let maxPostTransitTime: Int?
     public let numLegAlternatives: Int?
+    public var directModes: [TransportationMode]?
+    public var preTransitModes: [TransportationMode]?
+    public var postTransitModes: [TransportationMode]?
+    public var requireBikeTransport: Bool = false
+    public var cyclingSpeed: Double?
     
     public struct RouteLocation: Sendable {
         public let stopId: String?

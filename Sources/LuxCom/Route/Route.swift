@@ -31,7 +31,8 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
 
     // MOTIS drops transit routes slower than 1.5x the direct walk/ride, but direct trips
     // ignore via stops, so with vias this would prune every route that honours them.
-    if options.via?.isEmpty ?? true {
+    let ridesDirect = options.directModes?.contains { $0 != .walk } ?? false
+    if options.via?.isEmpty ?? true, !ridesDirect {
         queryItems.append(URLQueryItem(name: "fastestDirectFactor", value: "1.5"))
     }
     
@@ -77,5 +78,23 @@ public func getRoute(_ options: RouteOptions) async throws -> Trip {
         queryItems.append(URLQueryItem(name: "numLegAlternatives", value: String(numLegAlternatives)))
     }
     
+    for (name, modes) in [
+        ("directModes", options.directModes),
+        ("preTransitModes", options.preTransitModes),
+        ("postTransitModes", options.postTransitModes)
+    ] {
+        if let modes, !modes.isEmpty {
+            queryItems.append(URLQueryItem(name: name, value: modes.map(\.rawValue).joined(separator: ",")))
+        }
+    }
+
+    if let cyclingSpeed = options.cyclingSpeed {
+        queryItems.append(URLQueryItem(name: "cyclingSpeed", value: String(cyclingSpeed)))
+    }
+
+    if options.requireBikeTransport {
+        queryItems.append(URLQueryItem(name: "requireBikeTransport", value: "true"))
+    }
+
     return try await APIClient.fetch(from: "/plan", apiVersion: "v6", queryItems: queryItems)
 }
